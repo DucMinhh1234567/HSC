@@ -1,0 +1,57 @@
+# Default heading / block detection patterns for Vietnamese + English textbooks.
+# Override per-subject by creating a new YAML (e.g., math.yaml, law.yaml).
+
+heading_patterns:
+  level_1:
+    - regex: "^(CHƯƠNG|PHẦN|CHAPTER|PART)\\s+\\d+"
+    - regex: "^(Chương|Phần)\\s+[IVXLCDM]+"
+    font_size_min: 16
+    is_bold: true
+
+  level_2:
+    - regex: "^\\d+\\.\\d+\\s+"
+    font_size_min: 13
+    is_bold: true
+
+  level_3:
+    - regex: "^\\d+\\.\\d+\\.\\d+\\s+"
+    font_size_min: 11
+    is_bold: true
+
+  level_4:
+    - regex: "^[a-z]\\)\\s+"
+    - regex: "^\\d+\\.\\d+\\.\\d+\\.\\d+\\s+"
+
+special_block_patterns:
+  definition:
+    - "^(Định nghĩa|Definition)\\s+\\d+"
+  theorem:
+    - "^(Định lý|Theorem|Bổ đề|Lemma|Hệ quả|Corollary)\\s+\\d+"
+  example:
+    - "^(Ví dụ|Example)\\s+\\d+"
+  exercise:
+    - "^(Bài tập|Bài\\s+\\d+|Exercise|Problem)\\s*\\d*"
+  note:
+    - "^(Chú ý|Ghi chú|Note|Remark|Nhận xét)"
+  proof:
+    - "^(Chứng minh|Proof)"
+
+reference_patterns:
+  vi:
+    - "[Xx]em\\s+(Hình|Bảng|Bài tập|Định nghĩa|Định lý|Mục|Chương)\\s+[\\d.]+"
+    - "[Tt]heo\\s+(Định lý|Định nghĩa|Hệ quả|Bổ đề)\\s+[\\d.]+"
+    - "[Tt]ại\\s+(Bảng|Hình|Phụ lục)\\s+[\\d.]+"
+    - "[Nn]hư\\s+(đã trình bày|đề cập)\\s+(ở|tại|trong)\\s+(Mục|Chương)\\s+[\\d.]+"
+  en:
+    - "[Ss]ee\\s+(Figure|Table|Section|Chapter|Theorem|Definition)\\s+[\\d.]+"
+    - "[Aa]s\\s+(shown|described|defined)\\s+in\\s+(Figure|Table|Section)\\s+[\\d.]+"
+    - "[Rr]efer\\s+to\\s+(Figure|Table|Section|Appendix)\\s+[\\d.]+"
+
+noise_patterns:
+  header_footer:
+    - max_height_ratio: 0.08   # top/bottom 8% of page
+  page_numbers:
+    - "^\\s*\\d+\\s*$"
+    - "^-\\s*\\d+\\s*-$"
+    - "^Trang\\s+\\d+$"
+    - "^Page\\s+\\d+$"
