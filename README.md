@@ -1,0 +1,2 @@
+# HSC
+Hierarchical Semantic Chunking
