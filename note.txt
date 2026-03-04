@@ -1,0 +1,83 @@
+1. Chạy thử file test block file C.pdf thấy không lấy được heading 1 là:
+Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN GIẢN
+Tuy nhiên lại vẫn xác định được 2.1 là heading 2 và heading 2.1.1 là heading 3, vân vân
+? Tại sao lại không lấy được text Chương 2
+? Tại sao lại nhận diện heading 2.1 là heading 2 chứ ko phải heading 1
+-> Suy đoán ban đầu là Chương 2 bị tính nhầm thành header và footer và bị loại bỏ trong quá trình preprocessing
+-> Nhưng 2.1 nhận diện được heading 2 là do đã nhận diện được Chương 2 là heading 1 nên tự động phân loại thành 2
+-> Như thế thì sẽ phản lại với suy đoán tính nhầm thành header
+-> Vậy còn một lý do nữa là code đã được config hard coded font số bao nhiêu, in đậm, in nghiêng, ... nên thành ra Vậy
+-> Hoặc có thể kết quả in limited nên bỏ qua (tuy nhiên có lẽ code in từ trên xuống nên TH này ko hợp lý lắm)
+
+2. Chạy file notebook 01 thì thấy:
+trang 15 C.pdf (là trang có Chương 2) thì thấy block 
+"Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN GIẢN"
+bị tách làm 2 là "Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN" và "GIẢN"
+như là copy paste từ pdf ra vại
+trong khi đó block text thường thì lấy được hầu như toàn bộ, bị mất dòng cuối là dòng gần heading 2.1.2
+không biết liệu khi chunking có vấn đề gì không
+-> Có lẽ do code file classifier, cần xem lại
+
+===================================
+1. Về các nhận định trong note.txt
+1.1 Tại sao không “thấy” heading 1 Chương 2 trong demo classifier?
+Dựa trên code hiện tại:
+for block in blocks:    first_line = block.raw_text.split("\n", 1)[0].strip()    btype, level, confidence = _match_block(        first_line, block.font_info, heading_pats, special_pats,    )    ...
+và config regex:
+heading_patterns:  level_1:    patterns:      - "^(CHƯƠNG|PHẦN|CHAPTER|PART)\\s+\\d+"      - "^(Chương|Phần)\\s+\\d+\\.?\\s+"      - "^(Chương|Phần)\\s+[IVXLCDM]+"    font_hints:      size_min: 16      is_bold: preferred
+Dòng Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN rất phù hợp với pattern level_1 thứ 2: bắt đầu bằng Chương + số + dấu : + khoảng trắng.
+Trong notebook 01_extraction_demo.ipynb bạn đã thấy block đầu của page 15 là:
+> Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN
+> (block kế tiếp chỉ là GIẢN)
+Nghĩa là:
+Block đó không bị remove bởi _filter_noise (header/footer).
+first_line của block đúng là chuỗi đó → regex level_1 sẽ match, heading_level=1.
+Vì vậy, về mặt logic classifier hiện tại có đủ điều kiện để nhận diện Chương 2 là heading level 1. Nếu lúc bạn chạy demo không thấy nó trong phần === HEADINGS (limited) ===, các khả năng hợp lý hơn là:
+Bạn đang lọc theo khoảng trang (START_PAGE, END_PAGE) và print chỉ một subset; rất dễ bỏ sót nếu cấu hình khác lúc hiện tại.
+Hoặc bạn chỉ “lướt log” và không để ý rằng dòng đó đã được in (vì nó bị cắt sau ~160 ký tự hoặc nằm lẫn giữa nhiều heading khác).
+Điểm quan trọng: code không yêu cầu phải có heading 1 trước thì mới cho phép có heading 2. Hàm _match_block đơn giản là:
+for level, pat, hints in heading_pats:    if pat.search(first_line):        return BlockType.HEADING, level, ......return BlockType.PARAGRAPH, None, ...
+Nên:
+2.1 ("2.1. ..."): match regex level_2 → luôn được gán heading_level=2 kể cả khi không có Chương 2 phía trước.
+2.1.1 ("2.1.1 ..."): match level_3 tương tự.
+Nói cách khác, suy luận trong note:
+> “2.1 nhận diện được heading 2 là do đã nhận diện được Chương 2 là heading 1…”
+là không đúng với code hiện tại. Stack section_path chỉ dùng để xây cây, nhưng bản thân level 2/3 không phụ thuộc vào việc đã có level 1 hay chưa.
+1.2 Chương 2 bị tính nhầm header/footer?
+Hàm lọc header/footer:
+if total_pages < 3:    return set()...candidate_pages[text].add(b.page)...threshold = math.floor(total_pages * min_page_ratio) + 1return { text for text, pages in candidate_pages.items() if len(pages) >= threshold }
+Một text chỉ bị coi là header/footer nếu:
+Nằm trong vùng top/bottom 8% trang, và
+Xuất hiện trên >40% số trang (với config mặc định).
+Chương 2: ... chỉ xuất hiện trên đúng 1 trang, nên sẽ không thể bị coi là header/footer theo logic này.
+Bạn đã chạy notebook 01_extraction_demo.ipynb và thấy rõ block Chương 2: ... vẫn tồn tại → xác nhận thêm lần nữa là nó không bị lọc nhầm.
+2. Về hiện tượng tách “GIẢN” ra block riêng
+Quan sát trong notebook:
+Block 0: "Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN" (font 16pt bold).
+Block 1: "GIẢN" (cùng font, nhưng bị PyMuPDF tách thành block khác).
+Hàm trích block:
+page_dict = page.get_text("dict")for blk in page_dict.get("blocks", []):    if blk.get("type") != 0:        continue    text = _block_text(blk)    ...    blocks.append(Block(..., raw_text=text.strip(), font_info=_dominant_font(blk)))
+page.get_text("dict") là quyết định của PyMuPDF về cách chia block; đôi khi một dòng heading bị tách làm 2 text-block nằm cạnh nhau.
+_block_text chỉ nối spans bên trong mỗi block chứ không merge các block lân cận; vì vậy chuyện “GIẢN” bị rơi sang block khác là hệ quả tự nhiên của cấu trúc PDF.
+Ảnh hưởng:
+Classifier: không vấn đề lớn, vì nó chỉ nhìn first_line:
+Block 0 chứa từ Chương 2: ... ĐƠN → pattern đã đủ match level_1; việc thiếu “GIẢN” không làm regex fail.
+Chunking sau này:
+Nếu bạn chunk theo heading-level, tiêu đề Chương 2 vẫn đúng; GIẢN sẽ rơi vào block tiếp theo, có thể được coi là paragraph đầu tiên của chương (hoặc bạn có thể bổ sung heuristic “merge các block nhỏ ngay sau heading nếu cùng font/bbox sát nhau”).
+3. Về việc “mất dòng cuối gần heading 2.1.2”
+Đây là triệu chứng thường gặp với PDF:
+Dòng cuối gần mép dưới trang đôi khi:
+Bị tách ra thành block riêng (nằm rất sát vùng bottom_limit → dễ bị coi là footer nếu text trùng nhau nhiều trang, ví dụ “Trường/ Khoa / năm xuất bản / số trang…”).
+Hoặc bị PyMuPDF nhóm chung với số trang, khiến regex page-number của bạn loại bỏ block đó.
+Nhưng với đoạn bạn mô tả (gần heading 2.1.2), nếu nội dung không lặp lại giữa các trang, thì theo code hiện tại nó không bị lọc bằng cơ chế repeated header/footer, mà nhiều khả năng chỉ là:
+Bị PyMuPDF “xé” thành block rất nhỏ / rời rạc nên bạn không chú ý trong 10 block đầu được in ra ở notebook, hoặc
+Nằm ngoài phạm vi SHOW_N = 10 trong cell in mẫu, nên bạn tưởng là “mất” nhưng thực ra vẫn còn trong blocks.
+4. Gợi ý cách đọc hiện tượng này
+Tóm lại:
+Chương 2 hiện tại gần như chắc chắn đã được nhận diện là heading 1 (chuỗi match regex, font ≥16pt, bold, không bị noise filter).
+Việc 2.1/2.1.1 được nhận là level 2/3 không phụ thuộc vào việc đã thấy Chương 2 → nên không có mâu thuẫn logic.
+Hiện tượng tách “GIẢN” và mất vài dòng cuối là artifact của cách PyMuPDF chia block + heuristic lọc header/footer, không phải bug logic cốt lõi của classifier.
+Ảnh hưởng chính đến chunking sau này là:
+Bạn có thể cân nhắc thêm bước merge các block heading liền kề có cùng font/bbox sát nhau.
+Khi debug, luôn xem full danh sách block trên trang (không chỉ 10 block đầu) để tránh kết luận “mất text”.
+Nếu bạn muốn, ở Agent mode tôi có thể giúp thêm 1–2 cell notebook riêng chỉ để in tất cả block dạng heading + context quanh page 15 của C.pdf, để bạn dễ eyeball hơn.

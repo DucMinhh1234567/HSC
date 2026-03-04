@@ -36,16 +36,16 @@
 
 ### 3. Tuần 2 – Heading detection & Chunking đơn giản
 
-- [ ] Thiết kế **schema** cho:
-  - [ ] `Block` (raw từ PDF)
-  - [ ] `ClassifiedBlock` (có type: heading/paragraph/table/figure…)
-  - [ ] `Chunk` (text + metadata cơ bản)
-- [ ] Xác định **pattern heading** cho giáo trình:
-  - [ ] Regex cho “Chương X”, “1.”, “1.1.”, “1.1.1”, v.v.
-  - [ ] Lưu pattern vào file config (vd. `config/subject_configs/default.yaml`)
-- [ ] Viết module **classification** (Layer 2 đơn giản):
-  - [ ] Phân loại heading vs paragraph dựa vào regex + style cơ bản (nếu lấy được)
-  - [ ] Bỏ qua header/footer lặp, số trang
+- [V] Thiết kế **schema** cho:
+  - [V] `Block` (raw từ PDF)
+  - [V] `ClassifiedBlock` (có type: heading/paragraph/table/figure…)
+  - [V] `Chunk` (text + metadata cơ bản)
+- [V] Xác định **pattern heading** cho giáo trình:
+  - [V] Regex cho “Chương X”, “1.”, “1.1.”, “1.1.1”, v.v.
+  - [V] Lưu pattern vào file config (vd. `config/subject_configs/default.yaml`)
+- [V] Viết module **classification** (Layer 2 đơn giản):
+  - [V] Phân loại heading vs paragraph dựa vào regex + style cơ bản (nếu lấy được)
+  - [V] Bỏ qua header/footer lặp, số trang
 - [ ] Viết module **chunking cơ bản**:
   - [ ] Gom paragraph theo từng heading thành 1 chunk logic
   - [ ] Nếu chunk quá dài: split theo đoạn, giữ lại tên heading ở đầu
