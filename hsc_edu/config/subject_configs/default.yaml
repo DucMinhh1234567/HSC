@@ -1,26 +1,40 @@
 # Default heading / block detection patterns for Vietnamese + English textbooks.
 # Override per-subject by creating a new YAML (e.g., math.yaml, law.yaml).
+#
+# Each heading level has:
+#   patterns  – list of regexes; a match on ANY is sufficient
+#   font_hints – optional soft signals (boost confidence, never hard-gate)
+#     size_min    – minimum font size in pt
+#     is_bold     – "preferred" = boost confidence if bold, but don't require it
 
 heading_patterns:
   level_1:
-    - regex: "^(CHƯƠNG|PHẦN|CHAPTER|PART)\\s+\\d+"
-    - regex: "^(Chương|Phần)\\s+[IVXLCDM]+"
-    font_size_min: 16
-    is_bold: true
+    patterns:
+      - "^(CHƯƠNG|PHẦN|CHAPTER|PART)\\s+\\d+"
+      - "^(Chương|Phần)\\s+\\d+\\.?\\s+"
+      - "^(Chương|Phần)\\s+[IVXLCDM]+"
+    font_hints:
+      size_min: 16
+      is_bold: preferred
 
   level_2:
-    - regex: "^\\d+\\.\\d+\\s+"
-    font_size_min: 13
-    is_bold: true
+    patterns:
+      - "^\\d+\\.\\d+\\.?\\s+"
+    font_hints:
+      size_min: 13
+      is_bold: preferred
 
   level_3:
-    - regex: "^\\d+\\.\\d+\\.\\d+\\s+"
-    font_size_min: 11
-    is_bold: true
+    patterns:
+      - "^\\d+\\.\\d+\\.\\d+\\.?\\s+"
+    font_hints:
+      size_min: 11
+      is_bold: preferred
 
   level_4:
-    - regex: "^[a-z]\\)\\s+"
-    - regex: "^\\d+\\.\\d+\\.\\d+\\.\\d+\\s+"
+    patterns:
+      - "^[a-z]\\)\\s+"
+      - "^\\d+\\.\\d+\\.\\d+\\.\\d+\\.?\\s+"
 
 special_block_patterns:
   definition:

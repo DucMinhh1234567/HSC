@@ -179,8 +179,13 @@ def _dominant_font(blk: dict) -> FontInfo:
             if n == 0:
                 continue
             flags = span.get("flags", 0)
-            is_bold = bool(flags & 16)  # bit 4 = bold
-            is_italic = bool(flags & 2)  # bit 1 = italic
+            font_name = span.get("font", "").lower()
+            is_bold = bool(flags & 16) or any(
+                kw in font_name for kw in ("bold", "bd", "heavy", "black")
+            )
+            is_italic = bool(flags & 2) or any(
+                kw in font_name for kw in ("italic", "oblique", "it")
+            )
             key = (
                 span.get("font", ""),
                 round(span.get("size", 0), 1),
