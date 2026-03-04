@@ -6,31 +6,31 @@
 - [V] Cài Git và tạo repo (local hoặc GitHub)  
 - [V] Đăng ký và lấy **API key LLM/Embedding** (OpenAI / Claude / Gemini)  
 - [V] Chọn **1–2 giáo trình PDF text-based** để làm dataset ban đầu  
-- [ ] Tạo file ghi chú nhỏ (vd. `notes/dataset.md`) mô tả:
-  - [ ] Tên giáo trình, môn học
-  - [ ] Số chương, có bảng/hình không
-  - [ ] 5–10 đoạn nội dung + câu hỏi chuẩn do bạn/giảng viên biên soạn (ground truth)
+- [V] Tạo file ghi chú nhỏ (vd. `notes/dataset.md`) mô tả:
+  - [V] Tên giáo trình, môn học
+  - [V] Số chương, có bảng/hình không
+  - [V] 5–10 đoạn nội dung + câu hỏi chuẩn do bạn/giảng viên biên soạn (ground truth)
 
 ---
 
 ### 2. Tuần 1 – Kiến trúc & Extraction cơ bản
 
-- [ ] Tạo cấu trúc thư mục chính (theo `ARCHITECTURE.md`, tối thiểu):  
-  - [ ] `core/extraction/`  
-  - [ ] `core/chunking/`  
-  - [ ] `storage/`  
-  - [ ] `generation/`  
-  - [ ] `config/`  
-  - [ ] `notebooks/`  
-- [ ] Cài các thư viện nền:
-  - [ ] `pymupdf` (fitz), `pdfplumber`
-  - [ ] `chromadb` (hoặc Qdrant client nếu dùng Qdrant)
-  - [ ] SDK LLM (`openai` hoặc tương đương)
-  - [ ] `python-dotenv`, `pydantic`, `pytest`
-- [ ] Viết module **detect PDF type** (MVP có thể luôn trả về text-based)
-- [ ] Viết module **text extraction**:
-  - [ ] Hàm đọc PDF → trả về danh sách block `{text, page, bbox}`
-  - [ ] Tạo notebook `01_extraction_demo.ipynb` để test: in ra các block theo trang
+- [V] Tạo cấu trúc thư mục chính (theo `ARCHITECTURE.md`, tối thiểu):  
+  - [V] `core/extraction/`  
+  - [V] `core/chunking/`  
+  - [V] `storage/`  
+  - [V] `generation/`  
+  - [V] `config/`  
+  - [V] `notebooks/`  
+- [V] Cài các thư viện nền:
+  - [V] `pymupdf` (fitz), `pdfplumber`
+  - [V] `chromadb` (hoặc Qdrant client nếu dùng Qdrant)
+  - [V] SDK LLM (`openai` hoặc tương đương)
+  - [V] `python-dotenv`, `pydantic`, `pytest`
+- [V] Viết module **detect PDF type** (MVP có thể luôn trả về text-based)
+- [V] Viết module **text extraction**:
+  - [V] Hàm đọc PDF → trả về danh sách block `{text, page, bbox}`
+  - [V] Tạo notebook `01_extraction_demo.ipynb` để test: in ra các block theo trang
 
 ---
 
