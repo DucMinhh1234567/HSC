@@ -8,6 +8,11 @@ Tuy nhiên lại vẫn xác định được 2.1 là heading 2 và heading 2.1.1
 -> Như thế thì sẽ phản lại với suy đoán tính nhầm thành header
 -> Vậy còn một lý do nữa là code đã được config hard coded font số bao nhiêu, in đậm, in nghiêng, ... nên thành ra Vậy
 -> Hoặc có thể kết quả in limited nên bỏ qua (tuy nhiên có lẽ code in từ trên xuống nên TH này ko hợp lý lắm)
+=============================================================
+Không bị nhầm thành footer/header do chỉ lấy 8% trên cùng hoặc dưới cùng và xuất hiện >40% 
+-> Tuy nhiên những trang có header/footer change thường xuyên thì >40% cũng bằng thừa 
+Block ko bị remove nhầm thành noise
+-> Chốt lại là không có vấn đề gì
 
 2. Chạy file notebook 01 thì thấy:
 trang 15 C.pdf (là trang có Chương 2) thì thấy block 
@@ -18,39 +23,7 @@ trong khi đó block text thường thì lấy được hầu như toàn bộ, b
 không biết liệu khi chunking có vấn đề gì không
 -> Có lẽ do code file classifier, cần xem lại
 
-===================================
-1. Về các nhận định trong note.txt
-1.1 Tại sao không “thấy” heading 1 Chương 2 trong demo classifier?
-Dựa trên code hiện tại:
-for block in blocks:    first_line = block.raw_text.split("\n", 1)[0].strip()    btype, level, confidence = _match_block(        first_line, block.font_info, heading_pats, special_pats,    )    ...
-và config regex:
-heading_patterns:  level_1:    patterns:      - "^(CHƯƠNG|PHẦN|CHAPTER|PART)\\s+\\d+"      - "^(Chương|Phần)\\s+\\d+\\.?\\s+"      - "^(Chương|Phần)\\s+[IVXLCDM]+"    font_hints:      size_min: 16      is_bold: preferred
-Dòng Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN rất phù hợp với pattern level_1 thứ 2: bắt đầu bằng Chương + số + dấu : + khoảng trắng.
-Trong notebook 01_extraction_demo.ipynb bạn đã thấy block đầu của page 15 là:
-> Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN
-> (block kế tiếp chỉ là GIẢN)
-Nghĩa là:
-Block đó không bị remove bởi _filter_noise (header/footer).
-first_line của block đúng là chuỗi đó → regex level_1 sẽ match, heading_level=1.
-Vì vậy, về mặt logic classifier hiện tại có đủ điều kiện để nhận diện Chương 2 là heading level 1. Nếu lúc bạn chạy demo không thấy nó trong phần === HEADINGS (limited) ===, các khả năng hợp lý hơn là:
-Bạn đang lọc theo khoảng trang (START_PAGE, END_PAGE) và print chỉ một subset; rất dễ bỏ sót nếu cấu hình khác lúc hiện tại.
-Hoặc bạn chỉ “lướt log” và không để ý rằng dòng đó đã được in (vì nó bị cắt sau ~160 ký tự hoặc nằm lẫn giữa nhiều heading khác).
-Điểm quan trọng: code không yêu cầu phải có heading 1 trước thì mới cho phép có heading 2. Hàm _match_block đơn giản là:
-for level, pat, hints in heading_pats:    if pat.search(first_line):        return BlockType.HEADING, level, ......return BlockType.PARAGRAPH, None, ...
-Nên:
-2.1 ("2.1. ..."): match regex level_2 → luôn được gán heading_level=2 kể cả khi không có Chương 2 phía trước.
-2.1.1 ("2.1.1 ..."): match level_3 tương tự.
-Nói cách khác, suy luận trong note:
-> “2.1 nhận diện được heading 2 là do đã nhận diện được Chương 2 là heading 1…”
-là không đúng với code hiện tại. Stack section_path chỉ dùng để xây cây, nhưng bản thân level 2/3 không phụ thuộc vào việc đã có level 1 hay chưa.
-1.2 Chương 2 bị tính nhầm header/footer?
-Hàm lọc header/footer:
-if total_pages < 3:    return set()...candidate_pages[text].add(b.page)...threshold = math.floor(total_pages * min_page_ratio) + 1return { text for text, pages in candidate_pages.items() if len(pages) >= threshold }
-Một text chỉ bị coi là header/footer nếu:
-Nằm trong vùng top/bottom 8% trang, và
-Xuất hiện trên >40% số trang (với config mặc định).
-Chương 2: ... chỉ xuất hiện trên đúng 1 trang, nên sẽ không thể bị coi là header/footer theo logic này.
-Bạn đã chạy notebook 01_extraction_demo.ipynb và thấy rõ block Chương 2: ... vẫn tồn tại → xác nhận thêm lần nữa là nó không bị lọc nhầm.
+=========================================
 2. Về hiện tượng tách “GIẢN” ra block riêng
 Quan sát trong notebook:
 Block 0: "Chương 2: LÀM QUEN LẬP TRÌNH C QUA CÁC VÍ DỤ ĐƠN" (font 16pt bold).

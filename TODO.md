@@ -46,12 +46,12 @@
 - [V] Viết module **classification** (Layer 2 đơn giản):
   - [V] Phân loại heading vs paragraph dựa vào regex + style cơ bản (nếu lấy được)
   - [V] Bỏ qua header/footer lặp, số trang
-- [ ] Viết module **chunking cơ bản**:
-  - [ ] Gom paragraph theo từng heading thành 1 chunk logic
-  - [ ] Nếu chunk quá dài: split theo đoạn, giữ lại tên heading ở đầu
-- [ ] Tạo notebook `02_chunking_demo.ipynb`:
-  - [ ] Chạy: PDF → blocks → classified_blocks → chunks
-  - [ ] In ra ví dụ 10 chunk đầu tiên (kèm header path đơn giản)
+- [V] Viết module **chunking cơ bản**:
+  - [V] Gom paragraph theo từng heading thành 1 chunk logic
+  - [V] Nếu chunk quá dài: split theo đoạn, giữ lại tên heading ở đầu
+- [V] Tạo notebook `02_chunking_demo.ipynb`:
+  - [V] Chạy: PDF → blocks → classified_blocks → chunks
+  - [V] In ra ví dụ 10 chunk đầu tiên (kèm header path đơn giản)
 
 ---
 
