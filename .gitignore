@@ -20,7 +20,6 @@ env/
 # Data & Models
 data/vectorstore/
 data/processed/
-*.pdf
 
 # OS
 .DS_Store
