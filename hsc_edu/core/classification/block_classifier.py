@@ -152,18 +152,63 @@ def _font_confidence_boost(font: FontInfo | None, hints: dict[str, Any]) -> floa
 
 _BASE_REGEX_CONFIDENCE = 0.75
 
-_TOC_RE = re.compile(r"\.{3,}\s*\d+\s*$")
+_TOC_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\.{3,}\s*\d+", re.MULTILINE),
+    re.compile(r"\n\s*\d{1,4}\s*$"),
+]
 
 
-def _is_toc_entry(line: str) -> bool:
-    """Return *True* if *line* looks like a table-of-contents entry.
+def _is_toc_entry(text: str) -> bool:
+    """Return *True* if *text* looks like a table-of-contents entry.
 
-    TOC lines typically end with a run of dots followed by a page number,
-    e.g. ``"Chương 1. MỞ ĐẦU ............7"``.  Letting these through the
-    heading classifier would pollute the section stack with every chapter
-    listed in the TOC (all on page 0) before the real headings appear.
+    Matches two common TOC patterns found in Vietnamese textbook PDFs:
+
+    * Dot-leader followed by a page number anywhere in the text, e.g.
+      ``"Chương 1. MỞ ĐẦU ............7"``
+    * A bare page number sitting alone on the last line of a multi-line
+      block, e.g. ``"5.4. ĐÓNG GÓI ...\\n75"``
     """
-    return _TOC_RE.search(line) is not None
+    return any(p.search(text) for p in _TOC_PATTERNS)
+
+
+def _detect_toc_pages(
+    blocks: list[Block],
+    heading_pats: list[tuple[int, re.Pattern[str], dict[str, Any]]],
+    special_pats: list[tuple[BlockType, re.Pattern[str]]],
+) -> frozenset[int]:
+    """Identify pages that belong to the table of contents.
+
+    Phase 1 — find *anchor* pages that contain at least one block
+    matching :func:`_is_toc_entry`.
+
+    Phase 2 — starting from page 0, include every page up through
+    the last anchor page that has >= 2 heading-pattern matches
+    (high heading density typical of TOC continuation pages that
+    lack dot-leaders).
+    """
+    from collections import defaultdict
+
+    anchor_pages: set[int] = set()
+    page_heading_count: dict[int, int] = defaultdict(int)
+
+    for block in blocks:
+        if _is_toc_entry(block.raw_text):
+            anchor_pages.add(block.page)
+        first_line = block.raw_text.split("\n", 1)[0].strip()
+        btype, _, _ = _match_block(first_line, block.font_info, heading_pats, special_pats)
+        if btype == BlockType.HEADING:
+            page_heading_count[block.page] += 1
+
+    if not anchor_pages:
+        return frozenset()
+
+    max_anchor = max(anchor_pages)
+    toc_pages: set[int] = set()
+    for page in range(max_anchor + 1):
+        if page in anchor_pages or page_heading_count.get(page, 0) >= 2:
+            toc_pages.add(page)
+
+    return frozenset(toc_pages)
 
 
 def classify_blocks(
@@ -192,6 +237,7 @@ def classify_blocks(
 
     heading_pats = _get_heading_patterns()
     special_pats = _get_special_patterns()
+    toc_pages = _detect_toc_pages(blocks, heading_pats, special_pats)
 
     section_stack: list[tuple[int, str]] = []
     classified: list[ClassifiedBlock] = []
@@ -199,7 +245,7 @@ def classify_blocks(
     for block in blocks:
         first_line = block.raw_text.split("\n", 1)[0].strip()
 
-        if _is_toc_entry(first_line):
+        if _is_toc_entry(block.raw_text) or block.page in toc_pages:
             btype, level, confidence = BlockType.PARAGRAPH, None, 0.5
         else:
             btype, level, confidence = _match_block(
