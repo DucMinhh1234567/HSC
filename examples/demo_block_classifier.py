@@ -11,14 +11,11 @@ from hsc_edu.core.models import BlockType
 # CẤU HÌNH NHANH — chỉ cần sửa các biến này rồi chạy file
 # ---------------------------------------------------------------------------
 
-# Đường dẫn tới file PDF muốn thử
-PDF_PATH = Path("data/C.pdf")  # ví dụ: Path("data/Java.pdf")
+PDF_PATH = Path("data/C.pdf")
 
-# Trang bắt đầu / kết thúc (1-based). Đặt END_PAGE = None để chạy tới cuối.
 START_PAGE = 15
-END_PAGE: int | None = 17  # hoặc None
+END_PAGE: int | None = 17
 
-# Giới hạn số lượng heading / paragraph in ra, để log không quá dài
 MAX_HEADINGS = 30
 MAX_PARAGRAPHS = 20
 
@@ -33,16 +30,13 @@ def main() -> None:
         f"end={END_PAGE if END_PAGE is not None else 'tới cuối'}"
     )
 
-    # 1) Layer 1 – Extract blocks toàn bộ PDF
     print("\n[1] Extracting blocks ...")
     blocks = extract_document(PDF_PATH)
     print(f"→ Tổng số block raw: {len(blocks)}")
 
-    # Convert 1-based → 0-based
     start_zero = max(START_PAGE - 1, 0)
     end_zero = END_PAGE - 1 if END_PAGE is not None else None
 
-    # 2) Lọc block theo khoảng trang
     if end_zero is not None and end_zero < start_zero:
         raise ValueError("END_PAGE phải >= START_PAGE")
 
@@ -61,12 +55,10 @@ def main() -> None:
         print("Không có block nào trong khoảng trang được chọn, dừng.")
         return
 
-    # 3) Layer 2 – Classification
     print("\n[2] Classifying blocks ...")
     classified = classify_blocks(filtered_blocks)
     print(f"→ Đã phân loại {len(classified)} block")
 
-    # 4) Thống kê nhanh
     num_headings = sum(1 for c in classified if c.block_type == BlockType.HEADING)
     num_para = sum(1 for c in classified if c.block_type == BlockType.PARAGRAPH)
     num_special = sum(
@@ -83,7 +75,6 @@ def main() -> None:
         f"\n  - Special:    {num_special}"
     )
 
-    # 5) In demo kết quả
     print("\n=== HEADINGS (limited) ===")
     count_h = 0
     for cb in classified:
@@ -125,4 +116,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

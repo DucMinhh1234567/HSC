@@ -6,8 +6,8 @@ pdf_path = Path("data/Java.pdf")
 
 result = detect_pdf_type(
     pdf_path,
-    sample_size=20,        # tùy chọn: kiểm tra tối đa 20 trang, None = tất cả
-    threshold=None,        # tùy chọn: None = dùng config mặc định (50 ký tự)
+    sample_size=20,
+    threshold=None,
 )
 
 print("Loại PDF:", result.pdf_type.value)

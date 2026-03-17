@@ -53,9 +53,11 @@ def _load_config(config_path: Path | None = None) -> dict[str, Any]:
 
 
 def reset_config_cache() -> None:
-    """Clear the cached config (useful for tests)."""
-    global _CONFIG_CACHE  # noqa: PLW0603
+    """Clear the cached config and compiled patterns (useful for tests)."""
+    global _CONFIG_CACHE, _HEADING_RE, _SPECIAL_RE  # noqa: PLW0603
     _CONFIG_CACHE = None
+    _HEADING_RE = None
+    _SPECIAL_RE = None
 
 
 # ---------------------------------------------------------------------------
@@ -150,6 +152,19 @@ def _font_confidence_boost(font: FontInfo | None, hints: dict[str, Any]) -> floa
 
 _BASE_REGEX_CONFIDENCE = 0.75
 
+_TOC_RE = re.compile(r"\.{3,}\s*\d+\s*$")
+
+
+def _is_toc_entry(line: str) -> bool:
+    """Return *True* if *line* looks like a table-of-contents entry.
+
+    TOC lines typically end with a run of dots followed by a page number,
+    e.g. ``"Chương 1. MỞ ĐẦU ............7"``.  Letting these through the
+    heading classifier would pollute the section stack with every chapter
+    listed in the TOC (all on page 0) before the real headings appear.
+    """
+    return _TOC_RE.search(line) is not None
+
 
 def classify_blocks(
     blocks: list[Block],
@@ -183,9 +198,13 @@ def classify_blocks(
 
     for block in blocks:
         first_line = block.raw_text.split("\n", 1)[0].strip()
-        btype, level, confidence = _match_block(
-            first_line, block.font_info, heading_pats, special_pats,
-        )
+
+        if _is_toc_entry(first_line):
+            btype, level, confidence = BlockType.PARAGRAPH, None, 0.5
+        else:
+            btype, level, confidence = _match_block(
+                first_line, block.font_info, heading_pats, special_pats,
+            )
 
         if btype == BlockType.HEADING and level is not None:
             _update_section_stack(section_stack, level, first_line)

@@ -55,21 +55,23 @@ def _token_ids_to_safe_text(enc: tiktoken.Encoding, token_ids: list[int]) -> str
 
 @dataclass
 class _BlockGroup:
-    """Accumulator for blocks under one heading."""
+    """Accumulator for blocks under one heading.
+
+    The heading block (if any) is stored separately from the body
+    ``blocks`` so that ``full_text`` never duplicates the heading.
+    """
 
     heading_text: str = ""
     heading_level: int | None = None
+    heading_block: ClassifiedBlock | None = None
     section_path: list[str] = field(default_factory=list)
     blocks: list[ClassifiedBlock] = field(default_factory=list)
     doc_id: str = ""
 
-
     @property
     def body_text(self) -> str:
         return "\n\n".join(
-            b.raw_text
-            for b in self.blocks
-            if b.block_type != BlockType.HEADING and b.raw_text.strip()
+            b.raw_text for b in self.blocks if b.raw_text.strip()
         )
 
     @property
@@ -84,19 +86,31 @@ class _BlockGroup:
 
     @property
     def block_ids(self) -> list[str]:
-        return [b.block_id for b in self.blocks]
+        ids: list[str] = []
+        if self.heading_block is not None:
+            ids.append(self.heading_block.block_id)
+        ids.extend(b.block_id for b in self.blocks)
+        return ids
 
     @property
     def page_start(self) -> int:
+        if self.heading_block is not None:
+            if self.blocks:
+                return min(self.heading_block.page, self.blocks[0].page)
+            return self.heading_block.page
         return self.blocks[0].page if self.blocks else 0
 
     @property
     def page_end(self) -> int:
-        return self.blocks[-1].page if self.blocks else 0
+        if self.blocks:
+            return self.blocks[-1].page
+        if self.heading_block is not None:
+            return self.heading_block.page
+        return 0
 
     @property
     def dominant_block_type(self) -> str:
-        types = [b.block_type for b in self.blocks if b.block_type != BlockType.HEADING]
+        types = [b.block_type for b in self.blocks]
         if not types:
             return BlockType.PARAGRAPH
         from collections import Counter
@@ -163,7 +177,11 @@ def chunk_blocks(
 
 
 def _group_by_heading(blocks: list[ClassifiedBlock]) -> list[_BlockGroup]:
-    """Split blocks into groups, each headed by a HEADING block."""
+    """Split blocks into groups, each headed by a HEADING block.
+
+    The heading block is stored in ``heading_block`` (not in ``blocks``)
+    so that ``full_text`` never duplicates the heading text.
+    """
     groups: list[_BlockGroup] = []
     current: _BlockGroup | None = None
 
@@ -174,10 +192,10 @@ def _group_by_heading(blocks: list[ClassifiedBlock]) -> list[_BlockGroup]:
             current = _BlockGroup(
                 heading_text=block.raw_text.strip(),
                 heading_level=block.heading_level,
+                heading_block=block,
                 section_path=list(block.section_path),
                 doc_id=block.doc_id,
             )
-            current.blocks.append(block)
         else:
             if current is None:
                 current = _BlockGroup(
@@ -240,8 +258,6 @@ def _split_group(
     """Split a long group at paragraph boundaries with heading prefix."""
     heading_prefix = grp.heading_text + "\n\n" if grp.heading_text else ""
     heading_tokens = count_tokens(heading_prefix) if heading_prefix else 0
-    # If the heading alone would exceed the limit, do not prepend it to each split chunk.
-    # this keeps all resulting chunks within max_tokens.
     if heading_tokens >= max_tokens:
         heading_prefix = ""
         heading_tokens = 0
@@ -250,19 +266,16 @@ def _split_group(
     if budget < 1:
         budget = 1
 
-    heading_block = next(
-        (b for b in grp.blocks if b.block_type == BlockType.HEADING),
-        None,
-    )
-    body_blocks = [b for b in grp.blocks if b.block_type != BlockType.HEADING]
+    heading_blk = grp.heading_block
+    body_blocks = grp.blocks
     if not body_blocks:
-        text = grp.full_text  # heading-only group
+        text = grp.full_text
         tokens = count_tokens(text)
         if tokens > max_tokens:
             enc = _get_encoder()
             token_ids = enc.encode(text)[:max_tokens]
             text = _token_ids_to_safe_text(enc, token_ids)
-            tokens = count_tokens(text)  # recount after decode: errors="replace" may alter the text
+            tokens = count_tokens(text)
             logger.warning(
                 "Heading-only group exceeds max_tokens (%d > %d); truncated. "
                 "doc_id=%r section_path=%r",
@@ -273,9 +286,7 @@ def _split_group(
             )
         return [_group_to_chunk(grp, text, tokens)]
 
-    paragraphs: list[tuple[str, str]] = [
-        (b.block_id, b.raw_text) for b in body_blocks
-    ]
+    id_to_block = {b.block_id: b for b in body_blocks}
 
     chunks: list[Chunk] = []
     buf_texts: list[str] = []
@@ -284,19 +295,18 @@ def _split_group(
     buf_page_start = body_blocks[0].page
     buf_page_end = body_blocks[0].page
 
-    for bid, ptext in paragraphs:
-        ptokens = count_tokens(ptext)
-        blk = next(b for b in body_blocks if b.block_id == bid)
+    for blk in body_blocks:
+        ptokens = count_tokens(blk.raw_text)
 
         if buf_tokens + ptokens > budget and buf_texts:
             chunk_text = heading_prefix + "\n\n".join(buf_texts)
             chunk_block_ids = list(buf_ids)
-            if heading_block is not None:
-                chunk_block_ids = [heading_block.block_id] + chunk_block_ids
+            if heading_blk is not None:
+                chunk_block_ids = [heading_blk.block_id] + chunk_block_ids
 
             page_start = buf_page_start
-            if heading_block is not None:
-                page_start = min(heading_block.page, page_start)            
+            if heading_blk is not None:
+                page_start = min(heading_blk.page, page_start)
 
             chunks.append(
                 Chunk(
@@ -320,27 +330,24 @@ def _split_group(
             buf_ids = overlap_ids
             buf_tokens = overlap_tok
             if overlap_ids:
-                first_overlap_block = next(
-                    b for b in body_blocks if b.block_id == overlap_ids[0]
-                )
-                buf_page_start = first_overlap_block.page
+                buf_page_start = id_to_block[overlap_ids[0]].page
             else:
                 buf_page_start = blk.page
 
-        buf_texts.append(ptext)
-        buf_ids.append(bid)
+        buf_texts.append(blk.raw_text)
+        buf_ids.append(blk.block_id)
         buf_tokens += ptokens
         buf_page_end = blk.page
 
     if buf_texts:
         chunk_text = heading_prefix + "\n\n".join(buf_texts)
         chunk_block_ids = list(buf_ids)
-        if heading_block is not None:
-            chunk_block_ids = [heading_block.block_id] + chunk_block_ids
+        if heading_blk is not None:
+            chunk_block_ids = [heading_blk.block_id] + chunk_block_ids
 
         page_start = buf_page_start
-        if heading_block is not None:
-            page_start = min(heading_block.page, page_start)
+        if heading_blk is not None:
+            page_start = min(heading_blk.page, page_start)
 
         chunks.append(
             Chunk(
