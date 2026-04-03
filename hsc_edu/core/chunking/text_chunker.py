@@ -125,6 +125,7 @@ class _BlockGroup:
 def chunk_blocks(
     blocks: list[ClassifiedBlock],
     *,
+    subject: str = "",
     max_tokens: int | None = None,
     min_tokens: int | None = None,
     overlap_tokens: int | None = None,
@@ -136,6 +137,9 @@ def chunk_blocks(
     ----------
     blocks:
         Layer 2 output — classified blocks in document order.
+    subject:
+        Subject / course name (e.g. ``"Lập trình Java"``).  Applied to
+        every returned chunk so downstream consumers can filter by subject.
     max_tokens:
         Maximum tokens per chunk.  *None* → ``settings.chunking.max_tokens``.
     min_tokens:
@@ -153,13 +157,15 @@ def chunk_blocks(
     max_tokens = max_tokens or cfg.max_tokens
     min_tokens = min_tokens or cfg.min_tokens
     overlap_tokens = overlap_tokens or cfg.overlap_tokens
-    # merge_short_threshold falls back to min_tokens so the config value is
-    # not silently ignored when no explicit override is provided.
     merge_short_threshold = merge_short_threshold or cfg.merge_short_threshold or min_tokens
 
     groups = _group_by_heading(blocks)
     raw_chunks = _groups_to_chunks(groups, max_tokens, overlap_tokens)
     merged = _merge_short_chunks(raw_chunks, merge_short_threshold)
+
+    if subject:
+        for chunk in merged:
+            chunk.subject = subject
 
     logger.info(
         "Chunked %d blocks → %d groups → %d raw chunks → %d final chunks",

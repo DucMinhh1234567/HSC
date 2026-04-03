@@ -152,6 +152,9 @@ def _font_confidence_boost(font: FontInfo | None, hints: dict[str, Any]) -> floa
 
 _BASE_REGEX_CONFIDENCE = 0.75
 
+_MAX_TOC_START_PAGE = 15
+_MAX_TOC_GAP = 3
+
 _TOC_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"\.{3,}\s*\d+", re.MULTILINE),
     re.compile(r"\n\s*\d{1,4}\s*$"),
@@ -178,13 +181,18 @@ def _detect_toc_pages(
 ) -> frozenset[int]:
     """Identify pages that belong to the table of contents.
 
-    Phase 1 — find *anchor* pages that contain at least one block
-    matching :func:`_is_toc_entry`.
+    Phase 1 — find *anchor* pages containing at least one block that
+    matches :func:`_is_toc_entry`.
 
-    Phase 2 — starting from page 0, include every page up through
-    the last anchor page that has >= 2 heading-pattern matches
-    (high heading density typical of TOC continuation pages that
-    lack dot-leaders).
+    Phase 2 — walk through anchor pages sorted by page number.
+    Starting from the first anchor (which must be within the first
+    15 pages), include all pages from 0 up through the last anchor
+    that is still within *_MAX_TOC_GAP* pages of the previous one.
+    This fills gap pages that lack dot-leaders while ignoring
+    spurious anchors deep in the document body.
+
+    Phase 3 — extend for heading-dense pages immediately after the
+    anchor range (TOC continuation without dot-leaders).
     """
     from collections import defaultdict
 
@@ -202,11 +210,23 @@ def _detect_toc_pages(
     if not anchor_pages:
         return frozenset()
 
-    max_anchor = max(anchor_pages)
-    toc_pages: set[int] = set()
-    for page in range(max_anchor + 1):
-        if page in anchor_pages or page_heading_count.get(page, 0) >= 2:
-            toc_pages.add(page)
+    sorted_anchors = sorted(anchor_pages)
+
+    if sorted_anchors[0] > _MAX_TOC_START_PAGE:
+        return frozenset()
+
+    toc_end = sorted_anchors[0]
+    for i in range(1, len(sorted_anchors)):
+        if sorted_anchors[i] - toc_end > _MAX_TOC_GAP:
+            break
+        toc_end = sorted_anchors[i]
+
+    toc_pages: set[int] = set(range(toc_end + 1))
+
+    page = toc_end + 1
+    while page_heading_count.get(page, 0) >= 2:
+        toc_pages.add(page)
+        page += 1
 
     return frozenset(toc_pages)
 

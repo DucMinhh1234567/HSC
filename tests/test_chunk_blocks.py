@@ -148,3 +148,35 @@ class TestChunkMetadata:
                               overlap_tokens=0, merge_short_threshold=1)
         assert "h1" in chunks[0].block_ids
         assert "b1" in chunks[0].block_ids
+
+    def test_subject_propagated(self):
+        """The ``subject`` kwarg should propagate to every chunk."""
+        blocks = [
+            _cb("Chương 1. MỞ ĐẦU", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 1. MỞ ĐẦU"], page=5),
+            _cb("Nội dung chương 1.", page=5,
+                section_path=["Chương 1. MỞ ĐẦU"]),
+            _cb("Chương 2. BIẾN", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 2. BIẾN"], page=10),
+            _cb("Nội dung chương 2.", page=10,
+                section_path=["Chương 2. BIẾN"]),
+        ]
+        chunks = chunk_blocks(
+            blocks, subject="Lập trình Java",
+            max_tokens=2000, min_tokens=1,
+            overlap_tokens=0, merge_short_threshold=1,
+        )
+        assert len(chunks) >= 2
+        for ch in chunks:
+            assert ch.subject == "Lập trình Java"
+
+    def test_subject_default_empty(self):
+        """Without ``subject``, the field stays empty (backward compatible)."""
+        blocks = [
+            _cb("Chương 1. MỞ ĐẦU", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 1. MỞ ĐẦU"], page=5),
+            _cb("Body", page=5, section_path=["Chương 1. MỞ ĐẦU"]),
+        ]
+        chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
+                              overlap_tokens=0, merge_short_threshold=1)
+        assert chunks[0].subject == ""

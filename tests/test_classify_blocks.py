@@ -243,8 +243,8 @@ class TestDetectTocPages:
         assert 1 in toc
         assert 5 not in toc
 
-    def test_gap_pages_with_high_density_included(self):
-        """Page between anchors with >=2 heading matches is included."""
+    def test_all_pages_up_to_last_anchor_included(self):
+        """All pages from 0 through the last anchor are TOC (contiguous)."""
         blocks = [
             _block("Chương 1. MỞ ĐẦU ............7", page=0),
             _block("Chương 10. FOO", page=2),
@@ -255,8 +255,30 @@ class TestDetectTocPages:
         spats = _get_special_patterns()
         toc = _detect_toc_pages(blocks, pats, spats)
         assert 0 in toc
+        assert 1 in toc  # gap page — no blocks but inside TOC range
         assert 2 in toc
         assert 3 in toc
+
+    def test_gap_page_without_matching_entries_included(self):
+        """Pages with non-matching TOC entries are still included via range."""
+        blocks = [
+            _block("Chương 1. MỞ ĐẦU ............7", page=0),
+            # Page 2: entry without dots or trailing newline+number
+            _block(
+                "2.4.3. Biểu thức điều kiện trong các cấu trúc điều khiển 43",
+                page=2,
+            ),
+            _block("Chương 5. KẾ THỪA\n50", page=3),
+            _block("Chương 5. KẾ THỪA", page=10),  # real content
+        ]
+        pats = _get_heading_patterns()
+        spats = _get_special_patterns()
+        toc = _detect_toc_pages(blocks, pats, spats)
+        assert 0 in toc
+        assert 1 in toc   # gap page
+        assert 2 in toc   # non-matching entry but in range
+        assert 3 in toc   # anchor page
+        assert 10 not in toc
 
     def test_empty_when_no_toc_entries(self):
         blocks = [
