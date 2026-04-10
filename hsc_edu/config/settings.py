@@ -1,5 +1,6 @@
 """Global settings for HSC-Edu pipeline."""
 
+import os
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -43,26 +44,45 @@ class ChunkingConfig(BaseModel):
 
 
 class EmbeddingConfig(BaseModel):
-    """Embedding model settings."""
+    """Gemini embedding model settings."""
 
-    model_name: str = "text-embedding-3-small"
-    dimensions: int = 1536
+    model_name: str = "gemini-embedding-001"
+    dimensions: int = 768
+    batch_size: int = 20
+    api_key_env: str = "GOOGLE_API_KEY"
+    #: Seconds to wait between successful batches (reduces RPM / burst 429s on free tier).
+    embed_batch_delay_sec: float = 7.0
 
 
 class LLMConfig(BaseModel):
-    """LLM API settings."""
+    """Gemini LLM API settings."""
 
-    model_name: str = "gpt-4o"
+    model_name: str = "gemini-2.5-flash"
     temperature: float = 0.3
     max_output_tokens: int = 4096
+    api_key_env: str = "GOOGLE_API_KEY"
 
 
 class VectorStoreConfig(BaseModel):
-    """Vector store settings."""
+    """Qdrant vector store settings."""
 
-    provider: str = "chromadb"
+    provider: str = "qdrant"
     collection_name: str = "hsc_edu_chunks"
-    persist_directory: str = "./data/vectorstore"
+    url_env: str = "QDRANT_URL"
+    api_key_env: str = "QDRANT_API_KEY"
+    #: HTTP client timeout (seconds) for Qdrant Cloud — large upserts need generous limits.
+    http_timeout_sec: int = 180
+    #: Points per upsert request; smaller batches reduce write timeouts on slow links.
+    upsert_batch_size: int = 40
+
+
+class MongoConfig(BaseModel):
+    """MongoDB metadata/chunk store settings."""
+
+    uri_env: str = "MONGO_URI"
+    uri_default: str = "mongodb://localhost:27017"
+    database: str = "hsc_edu"
+    collection: str = "chunks"
 
 
 class Settings(BaseModel):
@@ -75,6 +95,7 @@ class Settings(BaseModel):
     embedding: EmbeddingConfig = EmbeddingConfig()
     llm: LLMConfig = LLMConfig()
     vector_store: VectorStoreConfig = VectorStoreConfig()
+    mongo: MongoConfig = MongoConfig()
 
 
 settings = Settings()
