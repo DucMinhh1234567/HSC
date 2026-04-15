@@ -23,7 +23,8 @@ def _get_collection() -> Collection:
     if _CLIENT is None:
         uri = os.environ.get(cfg.uri_env, cfg.uri_default)
         _CLIENT = MongoClient(uri)
-    db = _CLIENT[cfg.database]
+    db_name = os.environ.get(cfg.database_env, cfg.database)
+    db = _CLIENT[db_name]
     return db[cfg.collection]
 
 

@@ -81,6 +81,7 @@ class MongoConfig(BaseModel):
 
     uri_env: str = "MONGO_URI"
     uri_default: str = "mongodb://localhost:27017"
+    database_env: str = "MONGO_DB"
     database: str = "hsc_edu"
     collection: str = "chunks"
 

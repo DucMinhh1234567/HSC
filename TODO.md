@@ -57,16 +57,16 @@
 
 ### 4. Tuần 3 – Vector store & Retrieval
 
-- [ ] Thiết kế **schema metadata** cho chunk (MVP):
-  - [ ] `subject`, `chapter`, `section`, `page_start`, `page_end`, `type`
-- [ ] Viết module **embed_and_store**:
-  - [ ] Tạo embedding cho mỗi chunk (gọi API)
-  - [ ] Lưu vào **vector store** (Chroma/Qdrant)
-  - [ ] Lưu metadata vào DB đơn giản (SQLite hoặc ngay trong vector store)
-- [ ] Viết hàm **retrieve_chunks(query, filters, top_k)**:
-  - [ ] Cho phép filter theo `subject`, `chapter`
-- [ ] Tạo notebook `03_retrieval_demo.ipynb`:
-  - [ ] Thử 3–5 câu hỏi thủ công → kiểm tra các chunk được retrieve có hợp lý không
+- [V] Thiết kế **schema metadata** cho chunk (MVP):
+  - [V] `subject`, `chapter`, `section`, `page_start`, `page_end`, `type`
+- [V] Viết module **embed_and_store**:
+  - [V] Tạo embedding cho mỗi chunk (gọi API)
+  - [V] Lưu vào **vector store** (Chroma/Qdrant)
+  - [V] Lưu metadata vào DB đơn giản (SQLite hoặc ngay trong vector store)
+- [V] Viết hàm **retrieve_chunks(query, filters, top_k)**:
+  - [V] Cho phép filter theo `subject`, `chapter`
+- [V] Tạo notebook `03_retrieval_demo.ipynb`:
+  - [V] Thử 3–5 câu hỏi thủ công → kiểm tra các chunk được retrieve có hợp lý không
 
 ---
 
