@@ -26,12 +26,9 @@ class ClassificationConfig(BaseModel):
 
 
 class LinkingConfig(BaseModel):
-    """Layer 3 — Semantic linking settings."""
+    """Layer 3 — Semantic linking settings (hierarchy only)."""
 
-    enable_reference_linking: bool = True
-    enable_proximity_linking: bool = True
-    enable_table_continuation: bool = True
-    proximity_max_distance_px: float = 50.0
+    pass
 
 
 class ChunkingConfig(BaseModel):

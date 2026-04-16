@@ -180,3 +180,52 @@ class TestChunkMetadata:
         chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
                               overlap_tokens=0, merge_short_threshold=1)
         assert chunks[0].subject == ""
+
+
+# ---------------------------------------------------------------------------
+# New fields: header_path, chunk_type
+# ---------------------------------------------------------------------------
+
+class TestNewChunkFields:
+    def test_header_path_populated(self):
+        blocks = [
+            _cb("Chương 2. JAVA", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 2. JAVA"], page=10),
+            _cb("2.1. Biến", BlockType.HEADING, heading_level=2,
+                section_path=["Chương 2. JAVA", "2.1. Biến"], page=10),
+            _cb("Biến là vùng nhớ...", page=10,
+                section_path=["Chương 2. JAVA", "2.1. Biến"]),
+        ]
+        chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
+                              overlap_tokens=0, merge_short_threshold=1)
+        body_chunk = next(c for c in chunks if "Biến là vùng nhớ" in c.text)
+        assert body_chunk.header_path == "Chương 2. JAVA > 2.1. Biến"
+
+    def test_chunk_type_theory_for_paragraph(self):
+        blocks = [
+            _cb("Chương 1. MỞ ĐẦU", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 1. MỞ ĐẦU"], page=5),
+            _cb("Nội dung lý thuyết.", page=5,
+                section_path=["Chương 1. MỞ ĐẦU"]),
+        ]
+        chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
+                              overlap_tokens=0, merge_short_threshold=1)
+        assert chunks[0].chunk_type == "theory"
+
+    def test_chunk_type_for_theorem_block(self):
+        blocks = [
+            _cb("Chương 1. MỞ ĐẦU", BlockType.HEADING, heading_level=1,
+                section_path=["Chương 1. MỞ ĐẦU"], page=5),
+            _cb("Định lý 1.1 Cho hàm f...", block_type=BlockType.THEOREM,
+                page=5, section_path=["Chương 1. MỞ ĐẦU"]),
+        ]
+        chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
+                              overlap_tokens=0, merge_short_threshold=1)
+        body_chunk = next(c for c in chunks if "Định lý 1.1" in c.text)
+        assert body_chunk.chunk_type == "theorem"
+
+    def test_empty_section_path_gives_empty_header_path(self):
+        blocks = [_cb("Orphan text", page=0)]
+        chunks = chunk_blocks(blocks, max_tokens=2000, min_tokens=1,
+                              overlap_tokens=0, merge_short_threshold=1)
+        assert chunks[0].header_path == ""

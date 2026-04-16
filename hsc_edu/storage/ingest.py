@@ -58,7 +58,7 @@ def ingest_chunks(
     mongo_store = mongo or _get_mongo()
     qdrant_store = qdrant or _get_qdrant()
 
-    texts = [ch.text for ch in chunks]
+    texts = [ch.content or ch.text for ch in chunks]
     logger.info("Embedding %d chunks…", len(texts))
     vectors = embed_texts(texts, task_type="RETRIEVAL_DOCUMENT")
 
@@ -90,7 +90,7 @@ def ingest_pdf(
     mongo: MongoChunkStore | None = None,
     qdrant: QdrantVectorStore | None = None,
 ) -> int:
-    """Full pipeline: extract → classify → chunk → embed → store.
+    """Full pipeline: extract → classify → link → chunk → assemble → embed → store.
 
     Parameters
     ----------
@@ -109,6 +109,9 @@ def ingest_pdf(
     from hsc_edu.core.extraction import extract_document
     from hsc_edu.core.classification import classify_blocks
     from hsc_edu.core.chunking import chunk_blocks
+    from hsc_edu.core.linking import build_semantic_graph
+    from hsc_edu.core.assembly import assemble_chunks
+    from hsc_edu.core.models import BlockType
 
     pdf_path = Path(pdf_path)
     if doc_id is None:
@@ -116,8 +119,23 @@ def ingest_pdf(
 
     logger.info("Ingesting %r (subject=%r, doc_id=%r)…", pdf_path.name, subject, doc_id)
 
+    # Layer 1 — Extraction
     blocks = extract_document(pdf_path, doc_id=doc_id)
+
+    # Layer 2 — Classification
     classified = classify_blocks(blocks)
+
+    # Filter out non-text blocks (tables, figures)
+    _NON_TEXT_TYPES = {BlockType.TABLE, BlockType.FIGURE_CAPTION}
+    classified = [b for b in classified if b.block_type not in _NON_TEXT_TYPES]
+
+    # Layer 3 — Semantic Linking (hierarchy only)
+    graph = build_semantic_graph(classified)
+
+    # Layer 4 — Chunking
     chunks = chunk_blocks(classified, subject=subject)
+
+    # Layer 5 — Context Assembly
+    chunks = assemble_chunks(chunks, graph, classified)
 
     return ingest_chunks(chunks, mongo=mongo, qdrant=qdrant)

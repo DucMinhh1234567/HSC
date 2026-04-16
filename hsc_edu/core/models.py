@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import uuid
+from collections import defaultdict
+from dataclasses import dataclass, field
 from enum import Enum
 
 from pydantic import BaseModel, Field
@@ -29,6 +31,12 @@ class BlockType(str, Enum):
     PROOF = "proof"
     NOTE = "note"
     UNKNOWN = "unknown"
+
+
+class LinkType(str, Enum):
+    """Types of semantic links between blocks."""
+
+    HIERARCHY = "hierarchy"
 
 
 # ---------------------------------------------------------------------------
@@ -108,8 +116,80 @@ class ClassifiedBlock(Block):
 
 
 # ---------------------------------------------------------------------------
+# Layer 3 — Semantic Linking
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class SemanticLink:
+    """Directed edge in the semantic graph between two blocks."""
+
+    source_block_id: str
+    target_block_id: str
+    link_type: str  # one of LinkType values
+    confidence: float = 1.0
+    label: str = ""  # human-readable label, e.g. "Hình 3.2"
+
+
+@dataclass
+class SemanticGraph:
+    """Adjacency-list graph of :class:`SemanticLink` objects."""
+
+    _outgoing: dict[str, list[SemanticLink]] = field(
+        default_factory=lambda: defaultdict(list),
+    )
+    _incoming: dict[str, list[SemanticLink]] = field(
+        default_factory=lambda: defaultdict(list),
+    )
+
+    def add_link(self, link: SemanticLink) -> None:
+        self._outgoing[link.source_block_id].append(link)
+        self._incoming[link.target_block_id].append(link)
+
+    def add_links(self, links: list[SemanticLink]) -> None:
+        for link in links:
+            self.add_link(link)
+
+    def get_outgoing(self, block_id: str) -> list[SemanticLink]:
+        return self._outgoing.get(block_id, [])
+
+    def get_incoming(self, block_id: str) -> list[SemanticLink]:
+        return self._incoming.get(block_id, [])
+
+    def get_links_by_type(self, link_type: str) -> list[SemanticLink]:
+        result: list[SemanticLink] = []
+        for links in self._outgoing.values():
+            result.extend(lk for lk in links if lk.link_type == link_type)
+        return result
+
+    @property
+    def all_links(self) -> list[SemanticLink]:
+        result: list[SemanticLink] = []
+        for links in self._outgoing.values():
+            result.extend(links)
+        return result
+
+    def __len__(self) -> int:
+        return sum(len(v) for v in self._outgoing.values())
+
+
+# ---------------------------------------------------------------------------
 # Layer 4 — Chunking
 # ---------------------------------------------------------------------------
+
+
+BLOCK_TYPE_TO_CHUNK_TYPE: dict[str, str] = {
+    BlockType.THEOREM: "theorem",
+    BlockType.DEFINITION: "definition",
+    BlockType.EXAMPLE: "example",
+    BlockType.EXERCISE: "exercise",
+    BlockType.PROOF: "proof",
+    BlockType.NOTE: "note",
+    BlockType.CODE: "code",
+    BlockType.PARAGRAPH: "theory",
+    BlockType.HEADING: "theory",
+    BlockType.LIST_ITEM: "theory",
+}
 
 
 class Chunk(BaseModel):
@@ -134,5 +214,10 @@ class Chunk(BaseModel):
     page_start: int = 0
     page_end: int = 0
     block_type: str = BlockType.PARAGRAPH
+
+    header_path: str = ""
+    chunk_type: str = "mixed"
+    has_formula: bool = False
+    content: str = ""
 
     token_count: int = 0

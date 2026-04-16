@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 import tiktoken
 
 from hsc_edu.config.settings import settings
-from hsc_edu.core.models import BlockType, Chunk, ClassifiedBlock
+from hsc_edu.core.models import BLOCK_TYPE_TO_CHUNK_TYPE, BlockType, Chunk, ClassifiedBlock
 
 logger = logging.getLogger(__name__)
 
@@ -242,6 +242,7 @@ def _groups_to_chunks(
 def _group_to_chunk(grp: _BlockGroup, text: str, tokens: int) -> Chunk:
     chapter = grp.section_path[0] if grp.section_path else ""
     section = grp.section_path[-1] if grp.section_path else ""
+    dominant = grp.dominant_block_type
     return Chunk(
         doc_id=grp.doc_id,
         text=text,
@@ -251,7 +252,9 @@ def _group_to_chunk(grp: _BlockGroup, text: str, tokens: int) -> Chunk:
         section_path=list(grp.section_path),
         page_start=grp.page_start,
         page_end=grp.page_end,
-        block_type=grp.dominant_block_type,
+        block_type=dominant,
+        header_path=" > ".join(grp.section_path) if grp.section_path else "",
+        chunk_type=BLOCK_TYPE_TO_CHUNK_TYPE.get(dominant, "mixed"),
         token_count=tokens,
     )
 
@@ -325,6 +328,8 @@ def _split_group(
                     page_start=page_start,
                     page_end=buf_page_end,
                     block_type=grp.dominant_block_type,
+                    header_path=" > ".join(grp.section_path) if grp.section_path else "",
+                    chunk_type=BLOCK_TYPE_TO_CHUNK_TYPE.get(grp.dominant_block_type, "mixed"),
                     token_count=count_tokens(chunk_text),
                 )
             )
@@ -366,6 +371,8 @@ def _split_group(
                 page_start=page_start,
                 page_end=buf_page_end,
                 block_type=grp.dominant_block_type,
+                header_path=" > ".join(grp.section_path) if grp.section_path else "",
+                chunk_type=BLOCK_TYPE_TO_CHUNK_TYPE.get(grp.dominant_block_type, "mixed"),
                 token_count=count_tokens(chunk_text),
             )
         )
@@ -422,6 +429,8 @@ def _merge_short_chunks(
                 page_start=prev.page_start,
                 page_end=ch.page_end,
                 block_type=prev.block_type,
+                header_path=prev.header_path,
+                chunk_type=prev.chunk_type,
                 token_count=count_tokens(combined_text),
             )
         else:
