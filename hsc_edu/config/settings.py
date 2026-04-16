@@ -57,7 +57,7 @@ class EmbeddingConfig(BaseModel):
 class LLMConfig(BaseModel):
     """Gemini LLM API settings."""
 
-    model_name: str = "gemini-2.5-flash"
+    model_name: str = "gemini-flash-latest"
     temperature: float = 0.3
     max_output_tokens: int = 4096
     api_key_env: str = "GOOGLE_API_KEY"
@@ -82,7 +82,7 @@ class MongoConfig(BaseModel):
     uri_env: str = "MONGO_URI"
     uri_default: str = "mongodb://localhost:27017"
     database_env: str = "MONGO_DB"
-    database: str = "hsc_edu"
+    database: str = "learn"
     collection: str = "chunks"
 
 

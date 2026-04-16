@@ -1,0 +1,537 @@
+[
+  {
+    "question": "Dựa trên nội dung giáo trình, hãy giải thích bản chất của một chương trình hướng đối tượng khi đang vận hành (runtime) và cơ chế tương tác giữa các đối tượng thông qua ví dụ cụ thể.",
+    "suggested_answer": "Trong thời gian chạy, chương trình OOP là một tập các đối tượng gửi thông điệp cho nhau để yêu cầu và thực hiện dịch vụ. Việc thực hiện dịch vụ có thể làm thay đổi trạng thái của đối tượng. Ví dụ: Khi rút tiền, đối tượng ATM yêu cầu đối tượng tài khoản trừ tiền; kết quả là trạng thái tài khoản thay đổi (số dư giảm xuống).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.1, Trang 11-12",
+    "bloom_level": "Understand",
+    "keywords": [
+      "đối tượng",
+      "thông điệp",
+      "dịch vụ",
+      "trạng thái",
+      "runtime"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.1. KHÁI NIỆM CƠ BẢN",
+    "chunk_ids": [
+      "f3b23a908ab5"
+    ]
+  },
+  {
+    "question": "Dựa trên giáo trình, hãy giải thích mối quan hệ giữa 'lớp' (class) và 'đối tượng' (object/instance). Tại sao nói chương trình khi chạy là một tập hợp các đối tượng tương tác?",
+    "suggested_answer": "Lớp là khuôn mẫu/đặc tả các đặc điểm chung (thuộc tính và phương thức), còn đối tượng là một thực thể cụ thể được tạo ra từ lớp đó (giống như kiểu dữ liệu và biến). Khi chương trình chạy, các đối tượng được sinh ra từ các lớp cấu thành sẽ hoạt động, giữ trạng thái riêng và gửi thông điệp để tương tác với nhau.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.2, Trang 12-13",
+    "bloom_level": "Understand",
+    "keywords": [
+      "lớp",
+      "đối tượng",
+      "thực thể",
+      "khuôn mẫu",
+      "tương tác"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "39055656c070",
+      "438ca9946f7e",
+      "e1e7c1cef8f4"
+    ]
+  },
+  {
+    "question": "Khi một đối tượng vừa được tạo ra, hệ thống tự động thực hiện cơ chế gì để thiết lập trạng thái ban đầu cho nó? Đối tượng đó sẽ tồn tại đến khi nào?",
+    "suggested_answer": "Hệ thống tự động gọi một hàm khởi tạo (constructor) để khởi tạo giá trị cho các thuộc tính. Đối tượng bắt đầu tồn tại từ lúc đó, giữ định danh và trạng thái riêng trong bộ nhớ, và cuối cùng bị hủy đi khi không còn cần đến nữa.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 1.2, Trang 13",
+    "bloom_level": "Remember",
+    "keywords": [
+      "hàm khởi tạo",
+      "constructor",
+      "thời gian sống",
+      "khởi tạo"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "39055656c070",
+      "438ca9946f7e",
+      "e1e7c1cef8f4"
+    ]
+  },
+  {
+    "question": "Trong lập trình hướng đối tượng, việc 'gửi thông điệp' giữa các đối tượng được hiểu như thế nào về mặt kỹ thuật? Các thông điệp này có thể bắt nguồn từ đâu?",
+    "suggested_answer": "Gửi thông điệp thực chất là gọi một phương thức của đối tượng nhận. Thông điệp có thể xuất phát từ lời gọi phương thức của đối tượng khác trong chương trình, hoặc từ hệ điều hành và môi trường (ví dụ: sự kiện click chuột của người dùng).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.2, Trang 13",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thông điệp",
+      "phương thức",
+      "lời gọi hàm",
+      "hệ điều hành"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "39055656c070",
+      "438ca9946f7e",
+      "e1e7c1cef8f4"
+    ]
+  },
+  {
+    "question": "Tại sao trong một thiết kế tốt, người lái xe (đối tượng bên ngoài) không cần biết cơ chế chuyển đổi lực nhấn bàn đạp ga sang tốc độ của ô tô? Nguyên lý này áp dụng gì vào việc thiết kế đối tượng?",
+    "suggested_answer": "Vì đối tượng bên ngoài chỉ cần biết đối tượng cung cấp dịch vụ (trách nhiệm) nào, không cần quan tâm cách cài đặt chi tiết bên trong. Trong thiết kế, điều này giúp tách biệt giao diện sử dụng và cách thực thi, giúp đối tượng bên ngoài chỉ cần truy vấn thông tin hoặc yêu cầu thay đổi trạng thái thông qua dịch vụ.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 1.2, Trang 12",
+    "bloom_level": "Apply",
+    "keywords": [
+      "thiết kế tốt",
+      "dịch vụ",
+      "cài đặt",
+      "trách nhiệm"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "39055656c070",
+      "438ca9946f7e",
+      "e1e7c1cef8f4"
+    ]
+  },
+  {
+    "question": "Trình bày khái niệm 'Trừu tượng hóa' (abstraction) và cho ví dụ minh họa về đối tượng 'con mèo' trong hai ngữ cảnh khác nhau theo giáo trình.",
+    "suggested_answer": "Trừu tượng hóa là cơ chế biểu diễn một tình huống phức tạp bằng một mô hình đơn giản hóa, tập trung vào các tính chất quan trọng và bỏ qua các chi tiết không cần thiết cho bài toán cụ thể. Ví dụ: Với con mèo ở cửa hàng thú cảnh, ta quan tâm đến giống, màu lông, cân nặng, tuổi; nhưng ở bệnh viện thú y, ta lại quan tâm đến dung tích phổi, nồng độ đường trong máu, huyết áp.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 14)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "trừu tượng hóa",
+      "mô hình đơn giản hóa",
+      "tính chất quan trọng"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Nguyên tắc 'Đóng gói' (encapsulation) được định nghĩa như thế nào và công cụ chính yếu nào trong lập trình được dùng để thực hiện nó?",
+    "suggested_answer": "Đóng gói là việc bọc các trạng thái (thuộc tính) và hành vi (phương thức) của các trừu tượng hóa có liên quan vào trong một đơn vị duy nhất gọi là lớp. Định nghĩa lớp chính là công cụ lập trình chính yếu để thực hiện nguyên tắc này.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 14-15)",
+    "bloom_level": "Remember",
+    "keywords": [
+      "đóng gói",
+      "lớp",
+      "trạng thái",
+      "hành vi"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Phân biệt khái niệm 'Thuộc tính' (attribute) và 'Trạng thái' (state) của một đối tượng.",
+    "suggested_answer": "Thuộc tính (biến thực thể/thành viên dữ liệu) dùng để lưu trữ thông tin của đối tượng. Trạng thái phản ánh các giá trị hiện tại của các thuộc tính đó và là kết quả của hành vi đối tượng theo thời gian.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 15)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thuộc tính",
+      "trạng thái",
+      "giá trị hiện tại"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Giải thích mối quan hệ giữa 'Đóng gói' và 'Che giấu thông tin' (information hiding). Tại sao cơ chế này quan trọng trong lập trình?",
+    "suggested_answer": "Đóng gói đi kèm với che giấu thông tin để ẩn đi các chi tiết cài đặt bên trong, chỉ để lộ ra giao diện (interface) cho bên ngoài. Điều này cho phép lập trình viên tự do thay đổi cài đặt bên trong miễn là tuân thủ giao diện đã quy ước, và ngăn chặn bên ngoài truy cập trái phép vào chi tiết nội bộ.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 15-16)",
+    "bloom_level": "Apply",
+    "keywords": [
+      "che giấu thông tin",
+      "giao diện",
+      "chi tiết cài đặt"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Thế nào là nguyên tắc 'Thừa kế' (inheritance) và tại sao nó được coi là một hình thức tái sử dụng phần mềm?",
+    "suggested_answer": "Thừa kế là cơ chế cho phép định nghĩa lớp mới dựa trên lớp có sẵn, lớp con sẽ hấp thụ các thành viên của lớp cha. Nó là hình thức tái sử dụng phần mềm vì cho phép sử dụng lại giao diện và cài đặt của lớp cũ, đồng thời có thể bổ sung hoặc sửa đổi các tính năng mới.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 16)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thừa kế",
+      "tái sử dụng",
+      "lớp cha",
+      "lớp con"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Dựa trên nguyên tắc 'Đa hình' (polymorphism), hãy giải thích hiện tượng xảy ra khi các đối tượng khác nhau (như Triangle và Amoeba) nhận cùng một thông điệp 'rotate'.",
+    "suggested_answer": "Đa hình cho phép cùng một tên thông điệp được hiểu theo các cách khác nhau tùy vào đối tượng nhận. Khi cùng nhận thông điệp 'rotate', đối tượng Triangle và Amoeba sẽ thực hiện các phương thức rotate() khác nhau được định nghĩa riêng trong lớp của chúng.",
+    "difficulty": "Vận dụng cao",
+    "source": "Mục 1.3. CÁC NGUYÊN TẮC TRỤ CỘT (trang 17)",
+    "bloom_level": "Analyze",
+    "keywords": [
+      "đa hình",
+      "thông điệp",
+      "rotate"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Lịch sử phát triển của ngôn ngữ Java đã thay đổi mục tiêu ban đầu như thế nào do sự tác động của Internet?",
+    "suggested_answer": "Năm 1991, Java ban đầu được thiết kế cho các chương trình nhúng trên thiết bị gia dụng (lò vi sóng, hệ thống an ninh). Tuy nhiên, sự phát triển của Internet và WWW đã khiến Java chuyển hướng thành ngôn ngữ lập trình ứng dụng Web và Internet phổ thông.",
+    "difficulty": "Nhận biết",
+    "source": "Chương 2. Ngôn ngữ lập trình Java (trang 19)",
+    "bloom_level": "Remember",
+    "keywords": [
+      "Java",
+      "chương trình nhúng",
+      "ứng dụng Web"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "6ba412e52f5c",
+      "f70680b807a5",
+      "31a96c8f2096",
+      "ba93e82de984",
+      "e96a9f0af318",
+      "6edff6803008",
+      "24336c0e6768"
+    ]
+  },
+  {
+    "question": "Dựa trên nội dung giáo trình, hãy giải thích sự khác biệt về cách lưu trữ giữa biến thực thể (instance variable) và biến lớp (class variable). Làm thế nào để truy xuất biến lớp từ bên ngoài lớp đó?",
+    "suggested_answer": "Biến thực thể gắn liền với từng đối tượng cụ thể (mỗi đối tượng có bản sao riêng), trong khi biến lớp (khai báo với từ khóa 'static') chỉ có duy nhất một bản dùng chung cho tất cả các đối tượng và gắn với lớp. Để truy xuất từ bên ngoài, ta có thể dùng trực tiếp tên lớp (ví dụ: Cow.numOfCows).",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 10/Mục 10.1/Trang 163-164",
+    "bloom_level": "Understand",
+    "keywords": [
+      "static",
+      "biến lớp",
+      "biến thực thể",
+      "truy xuất"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "10.1. BIẾN CỦA LỚP",
+    "chunk_ids": [
+      "de07af24eb56"
+    ]
+  },
+  {
+    "question": "Tại sao phương thức getCount() trong ví dụ lớp Cow nên được khai báo là phương thức static thay vì phương thức thực thể (instance method)?",
+    "suggested_answer": "Vì getCount() không truy nhập vào biến thực thể (dữ liệu đặc thù của từng đối tượng) mà chỉ trả về giá trị chung của lớp. Việc dùng static giúp phương thức tồn tại độc lập, có thể gọi trực tiếp từ tên lớp ngay cả khi chưa có đối tượng nào được tạo.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 10.2, Trang 164-165",
+    "bloom_level": "Understand",
+    "keywords": [
+      "static",
+      "phương thức lớp",
+      "instance method",
+      "độc lập"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "10.2. PHƯƠNG THỨC CỦA LỚP",
+    "chunk_ids": [
+      "3f19c8ef98ce",
+      "b949a31050d1"
+    ]
+  },
+  {
+    "question": "Dựa trên giáo trình, có những cách nào để gọi một phương thức static? Cho ví dụ dựa trên lớp Cow.",
+    "suggested_answer": "Có thể gọi từ tên lớp (ví dụ: Cow.getCount()) hoặc gọi từ một tham chiếu đối tượng (ví dụ: c2.getCount()).",
+    "difficulty": "Nhận biết",
+    "source": "Mục 10.2, Trang 165-166",
+    "bloom_level": "Remember",
+    "keywords": [
+      "gọi phương thức",
+      "tên lớp",
+      "tham chiếu đối tượng"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "10.2. PHƯƠNG THỨC CỦA LỚP",
+    "chunk_ids": [
+      "3f19c8ef98ce",
+      "b949a31050d1"
+    ]
+  },
+  {
+    "question": "Giải thích lý do tại sao phương thức main() luôn phải được khai báo với từ khóa static?",
+    "suggested_answer": "Vì main() được kích hoạt để khởi động chương trình khi chưa có bất cứ đối tượng nào được tạo, nên nó phải được phép chạy mà không gắn với bất cứ đối tượng cụ thể nào.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 10.2, Trang 166",
+    "bloom_level": "Understand",
+    "keywords": [
+      "main",
+      "static",
+      "khởi động chương trình"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "10.2. PHƯƠNG THỨC CỦA LỚP",
+    "chunk_ids": [
+      "3f19c8ef98ce",
+      "b949a31050d1"
+    ]
+  },
+  {
+    "question": "Trong ví dụ lớp Cow, nếu ta cố gắng truy cập biến thực thể 'name' bên trong phương thức static 'getCount()', điều gì sẽ xảy ra? Tại sao?",
+    "suggested_answer": "Sẽ xảy ra lỗi vì phương thức static không được phép truy nhập biến thực thể. Phương thức static độc lập với các đối tượng cụ thể và không dùng đến đặc điểm hay dữ liệu đặc thù của mỗi đối tượng.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 10.2, Trang 164-166",
+    "bloom_level": "Apply",
+    "keywords": [
+      "biến thực thể",
+      "static",
+      "truy cập dữ liệu"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "10.2. PHƯƠNG THỨC CỦA LỚP",
+    "chunk_ids": [
+      "3f19c8ef98ce",
+      "b949a31050d1"
+    ]
+  },
+  {
+    "question": "Dựa trên nội dung giáo trình về các thành phần của chương trình, hãy xác định Input, Process và Output cho bài toán 'Đổi từ độ sang radian'?",
+    "suggested_answer": "Input: Giá trị độ (a). Process: Thực hiện tính toán dựa trên công thức chuyển đổi (a/p = a/180). Output: Giá trị radian tương ứng.",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 1, Bài tập 1.d, Trang 15",
+    "bloom_level": "Understand",
+    "keywords": [
+      "Input",
+      "Process",
+      "Output",
+      "độ",
+      "radian"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "1.3.2. Sử dụng lưu đồ (Flowchart)",
+    "chunk_ids": [
+      "b332d87395b1"
+    ]
+  },
+  {
+    "question": "Khi nào người lập trình nên chọn tạo một 'Project' thay vì chỉ tạo một 'Source File' đơn lẻ trong Dev-C++? Giải thích lý do.",
+    "suggested_answer": "Nên chọn Project khi chương trình C/C++ phức tạp và cần nhiều file để thực hiện. Project đóng vai trò là nơi cất giữ tất cả thông tin liên quan đến mã nguồn, thư viện, tài nguyên... để biên dịch thành chương trình.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 2.1.2.2 (Trang 15-17)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "Project",
+      "Source File",
+      "chương trình phức tạp"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "097e110d2b80",
+      "e44612207b34",
+      "7b167426c65a",
+      "8853bb5c6c67",
+      "bbaac96acc7b"
+    ]
+  },
+  {
+    "question": "Trong trường hợp chương trình thực thi xong và cửa sổ console tự động đóng ngay lập tức, bạn cần thêm những thành phần cụ thể nào vào mã nguồn để có thể quan sát kết quả?",
+    "suggested_answer": "Cần thêm thư viện '#include<conio.h>' ở đầu chương trình và sử dụng lệnh 'getch();' trước dấu đóng ngoặc '}' của hàm main để tạm dừng màn hình.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 2.1.2.2, Bước 4 (Trang 15-19)",
+    "bloom_level": "Apply",
+    "keywords": [
+      "getch()",
+      "conio.h",
+      "tạm dừng màn hình"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "097e110d2b80",
+      "e44612207b34",
+      "7b167426c65a",
+      "8853bb5c6c67",
+      "bbaac96acc7b"
+    ]
+  },
+  {
+    "question": "Để có thể sử dụng các tính năng gỡ lỗi (Debug) trong Dev-C++, người dùng cần thực hiện cấu hình thay đổi thông số nào trong Compiler Options?",
+    "suggested_answer": "Vào menu 'Tools' -> 'Compiler Options' -> tab 'Settings' -> chọn 'Linker' và thay đổi thông số 'Generate debugging information' sang 'Yes'.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 2.1.2.1 (Trang 15)",
+    "bloom_level": "Remember",
+    "keywords": [
+      "Debug",
+      "Compiler Options",
+      "Linker",
+      "Generate debugging information"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "097e110d2b80",
+      "e44612207b34",
+      "7b167426c65a",
+      "8853bb5c6c67",
+      "bbaac96acc7b"
+    ]
+  },
+  {
+    "question": "Trình bày quy trình 5 bước cơ bản để tạo ra một chương trình C/C++ bằng công cụ Dev-C++.",
+    "suggested_answer": "Quy trình gồm: Bước 1. Tạo file/project; Bước 2. Soạn thảo mã nguồn; Bước 3. Biên dịch, sửa lỗi (nếu có); Bước 4. Chạy thử và kiểm tra kết quả; Bước 5. Debug (nếu cần).",
+    "difficulty": "Nhận biết",
+    "source": "Mục 2.1.2.2 (Trang 15-17)",
+    "bloom_level": "Remember",
+    "keywords": [
+      "Quy trình",
+      "5 bước",
+      "Dev-C++"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "097e110d2b80",
+      "e44612207b34",
+      "7b167426c65a",
+      "8853bb5c6c67",
+      "bbaac96acc7b"
+    ]
+  },
+  {
+    "question": "Khi biên dịch chương trình và phát hiện lỗi Syntax (lỗi cú pháp), làm thế nào để xác định nhanh vị trí dòng mã nguồn gây ra lỗi đó?",
+    "suggested_answer": "Người dùng thực hiện double-click (nhấp đúp chuột) vào thông báo lỗi hiển thị ở tab biên dịch phía dưới màn hình, con trỏ sẽ lập tức trở về vị trí có lỗi trong mã nguồn.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 2.1.2.2, Bước 3 (Trang 15-17)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "Lỗi Syntax",
+      "Biên dịch",
+      "Vị trí lỗi"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "097e110d2b80",
+      "e44612207b34",
+      "7b167426c65a",
+      "8853bb5c6c67",
+      "bbaac96acc7b"
+    ]
+  },
+  {
+    "question": "Trong ngôn ngữ C, khi sử dụng hàm scanf để nhập dữ liệu cho một biến (ví dụ: scanf(\"%d\", &i);), dấu '&' đi trước tên biến có ý nghĩa và vai trò gì?",
+    "suggested_answer": "Dấu '&' được gọi là toán tử địa chỉ (address operator). Nó phối hợp với tên biến để giúp hàm scanf xác định vị trí trong bộ nhớ, từ đó lưu giá trị nhập từ bàn phím vào đúng biến đó.",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 2 / Mục 2.2.2. Ví dụ 2 / Trang 22-23",
+    "bloom_level": "Understand",
+    "keywords": [
+      "scanf",
+      "toán tử địa chỉ",
+      "biến",
+      "bộ nhớ"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "e3d5090d3792",
+      "01587007ffa7",
+      "3e44ccaf7f7f",
+      "f1a59d21b0e7",
+      "99c132533fc7"
+    ]
+  },
+  {
+    "question": "Trong ngôn ngữ lập trình C, từ khóa (keywords) được định nghĩa như thế nào và có quy tắc gì cần lưu ý khi viết chúng?",
+    "suggested_answer": "Từ khóa là từ có ý nghĩa xác định dùng để khai báo dữ liệu, viết câu lệnh. Lưu ý quan trọng là các từ khóa phải được viết bằng chữ thường.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 3.1. Từ khóa (trang 25)",
+    "bloom_level": "Remember",
+    "keywords": [
+      "từ khóa",
+      "khai báo dữ liệu",
+      "chữ thường"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "3.1. Từ khóa",
+    "chunk_ids": [
+      "bb64a42c39c2"
+    ]
+  },
+  {
+    "question": "Dựa trên quy tắc đặt tên trong ngôn ngữ C, hãy giải thích tại sao tên '3a_1' và 'num-odd' là không hợp lệ? Đồng thời, hãy cho biết tại sao 'Case' có thể được dùng làm tên dù 'case' là một từ khóa.",
+    "suggested_answer": "Tên '3a_1' không hợp lệ vì ký tự đầu tiên là số (quy tắc: phải là chữ hoặc dấu gạch dưới). Tên 'num-odd' không hợp lệ vì sử dụng dấu gạch ngang thay vì dấu gạch dưới. 'Case' hợp lệ vì trong C, tên phân biệt chữ hoa và chữ thường; do đó 'Case' khác với từ khóa 'case'.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 3.2. Tên (trang 25)",
+    "bloom_level": "Understand",
+    "keywords": [
+      "quy tắc đặt tên",
+      "từ khóa",
+      "phân biệt chữ hoa chữ thường"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "3.2. Tên",
+    "chunk_ids": [
+      "33205be1a047"
+    ]
+  }
+]
