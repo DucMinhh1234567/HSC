@@ -54,3 +54,17 @@ Hiện tượng tách “GIẢN” và mất vài dòng cuối là artifact củ
 Bạn có thể cân nhắc thêm bước merge các block heading liền kề có cùng font/bbox sát nhau.
 Khi debug, luôn xem full danh sách block trên trang (không chỉ 10 block đầu) để tránh kết luận “mất text”.
 Nếu bạn muốn, ở Agent mode tôi có thể giúp thêm 1–2 cell notebook riêng chỉ để in tất cả block dạng heading + context quanh page 15 của C.pdf, để bạn dễ eyeball hơn.
+
+=============================================================
+1, tạo web cơ bản:
+- up tài liệu
+- gen câu hỏi thêm tùy chọn:
+    + Chọn tài liệu
+    + chọn chương
+    + thêm ô prompt bổ sung của user: để thêm tiêu chí hoặc điều kiện hoặc kiến thức
+
+- từ câu hỏi và câu trả lời đề xuất: cho phép truy xuất ngược xem đang sử dụng:
+    + các chunk nào
+    + các chương hay trang nào
+
+2, thêm các tiêu chí đánh giá hoặc so sánh với RAG thường

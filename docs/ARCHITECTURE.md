@@ -73,19 +73,6 @@ PDF Input
 └──────────────────────┬──────────────────────────┘
                        │
                        ▼
-┌─────────────────────────────────────────────────┐
-│  LAYER 5: Context Assembly                       │
-│  ─────────────────────────────────               │
-│  • Prepend header path: "Giải tích 1 > Chương 3 │
-│    > 3.2 Đạo hàm > 3.2.1 Định nghĩa"           │
-│  • Inject referenced content (nếu có semantic    │
-│    link → nhúng bảng/hình được tham chiếu)       │
-│  • Gắn metadata: subject, chapter, section,      │
-│    page, type, difficulty_hint                    │
-│  • Output: final_chunks[] sẵn sàng embed         │
-└──────────────────────┬──────────────────────────┘
-                       │
-                       ▼
                Vector Store + MetaDB
 ```
 

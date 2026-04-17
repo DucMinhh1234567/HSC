@@ -1,0 +1,20 @@
+[
+  {
+    "question": "Dựa trên nội dung giáo trình, hãy giải thích bản chất của một chương trình hướng đối tượng khi đang vận hành (runtime) và kết quả của việc một đối tượng thực hiện một dịch vụ là gì?",
+    "suggested_answer": "Trong thời gian chạy, một chương trình OOP là một tập các đối tượng gửi thông điệp cho nhau để yêu cầu và thực hiện dịch vụ. Việc thực hiện một dịch vụ có thể dẫn đến việc đối tượng đó thay đổi trạng thái của bản thân (ví dụ: tài khoản bị trừ tiền sau khi thực hiện dịch vụ rút tiền).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.1 / Trang 11-12",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thời gian chạy",
+      "thông điệp",
+      "dịch vụ",
+      "trạng thái"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.1. KHÁI NIỆM CƠ BẢN",
+    "chunk_ids": [
+      "d6062f838406"
+    ]
+  }
+]

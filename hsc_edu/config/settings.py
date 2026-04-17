@@ -48,7 +48,7 @@ class EmbeddingConfig(BaseModel):
     batch_size: int = 20
     api_key_env: str = "GOOGLE_API_KEY"
     #: Seconds to wait between successful batches (reduces RPM / burst 429s on free tier).
-    embed_batch_delay_sec: float = 7.0
+    embed_batch_delay_sec: float = 10.0
 
 
 class LLMConfig(BaseModel):

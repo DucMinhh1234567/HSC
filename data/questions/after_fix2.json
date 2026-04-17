@@ -1,0 +1,417 @@
+[
+  {
+    "question": "Dựa trên ví dụ về việc rút tiền tại máy ATM trong giáo trình, hãy giải thích cơ chế hoạt động của một chương trình hướng đối tượng trong thời gian chạy (runtime).",
+    "suggested_answer": "Trong thời gian chạy, chương trình OOP là một tập hợp các đối tượng gửi thông điệp cho nhau để yêu cầu và thực hiện dịch vụ. Việc thực hiện dịch vụ có thể dẫn đến việc đối tượng thay đổi trạng thái của bản thân (ví dụ: tài khoản bị trừ tiền, máy ATM ghi thêm nhật trình).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.1, trang 11-12",
+    "bloom_level": "Understand",
+    "keywords": [
+      "đối tượng",
+      "thông điệp",
+      "dịch vụ",
+      "trạng thái",
+      "runtime"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.1. KHÁI NIỆM CƠ BẢN",
+    "chunk_ids": [
+      "d6062f838406"
+    ]
+  },
+  {
+    "question": "Dựa trên giáo trình, hãy giải thích mối quan hệ giữa 'lớp' (class) và 'đối tượng' (object). Tại sao lớp được coi là một khuôn mẫu?",
+    "suggested_answer": "Mối quan hệ này tương tự như giữa kiểu dữ liệu và biến. Lớp là đặc tả các đặc điểm chung (thuộc tính và phương thức), đóng vai trò là khuôn mẫu để từ đó tạo ra các đối tượng (thực thể) khi chương trình chạy.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.2, Trang 12-13",
+    "bloom_level": "Understand",
+    "keywords": [
+      "lớp",
+      "đối tượng",
+      "khuôn mẫu",
+      "thực thể"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "83efa820402b",
+      "6c764b222a25",
+      "ac0980fb1a29"
+    ]
+  },
+  {
+    "question": "Khi một đối tượng được tạo ra, hệ thống tự động thực hiện hành động gì và đối tượng đó sẽ duy trì những đặc tính riêng biệt nào trong suốt thời gian sống?",
+    "suggested_answer": "Hệ thống tự động gọi hàm khởi tạo (constructor) để khởi tạo giá trị thuộc tính. Trong suốt thời gian sống, mỗi đối tượng duy trì định danh riêng, trạng thái và bộ thuộc tính riêng, độc lập với các đối tượng khác cùng lớp và có vị trí riêng trong bộ nhớ.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 1.2, Trang 13",
+    "bloom_level": "Remember",
+    "keywords": [
+      "hàm khởi tạo",
+      "constructor",
+      "định danh",
+      "trạng thái",
+      "thời gian sống"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "83efa820402b",
+      "6c764b222a25",
+      "ac0980fb1a29"
+    ]
+  },
+  {
+    "question": "Tại sao trong một thiết kế hướng đối tượng tốt, các đối tượng bên ngoài không cần quan tâm đến cách cài đặt chi tiết dịch vụ của một đối tượng khác? Hãy lấy ví dụ về chiếc ô tô để minh họa.",
+    "suggested_answer": "Vì đối tượng bên ngoài chỉ cần biết đối tượng đó cung cấp dịch vụ gì (trách nhiệm) để sử dụng, giúp giảm sự phụ thuộc vào cách cài đặt bên trong. Ví dụ: người lái xe chỉ cần biết đạp ga để tăng tốc mà không cần biết cơ chế kỹ thuật chuyển đổi lực nhấn thành tốc độ.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 1.2, Trang 12",
+    "bloom_level": "Apply",
+    "keywords": [
+      "thiết kế tốt",
+      "dịch vụ",
+      "cài đặt",
+      "trách nhiệm"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "83efa820402b",
+      "6c764b222a25",
+      "ac0980fb1a29"
+    ]
+  },
+  {
+    "question": "Trong phương diện lập trình, việc các đối tượng 'liên lạc' với nhau thông qua thông điệp (message) thực chất là gì và các thông điệp này có thể bắt nguồn từ đâu?",
+    "suggested_answer": "Việc gửi thông điệp thực chất là gọi một phương thức của đối tượng đó. Thông điệp có thể xuất phát từ các đối tượng khác trong chương trình, hoặc từ hệ điều hành và môi trường chạy (ví dụ: sự kiện người dùng click chuột).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 1.2, Trang 13",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thông điệp",
+      "phương thức",
+      "liên lạc",
+      "hệ điều hành"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.2. ĐỐI TƯỢNG VÀ LỚP",
+    "chunk_ids": [
+      "83efa820402b",
+      "6c764b222a25",
+      "ac0980fb1a29"
+    ]
+  },
+  {
+    "question": "Trình bày khái niệm 'Trừu tượng hóa' (abstraction) và cho ví dụ minh họa từ giáo trình để làm rõ việc lựa chọn thuộc tính phụ thuộc vào ngữ cảnh bài toán.",
+    "suggested_answer": "Trừu tượng hóa là cơ chế biểu diễn một tình huống phức tạp bằng một mô hình đơn giản hóa, tập trung vào các tính chất quan trọng và bỏ qua chi tiết thừa. Ví dụ: Với một con mèo, trong cửa hàng thú cảnh ta quan tâm đến giống, màu lông, tuổi; nhưng trong bệnh viện thú y, ta lại quan tâm đến các thông số y tế như dung tích phổi, huyết áp.",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 1 / Mục 1.3 / Trang 14",
+    "bloom_level": "Understand",
+    "keywords": [
+      "trừu tượng hóa",
+      "mô hình",
+      "thuộc tính quan trọng"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "4223bdecbb4a",
+      "d9d95758bf8f",
+      "a160067b4669",
+      "3a6c59e764e5",
+      "c61545411f3a",
+      "35c79413af90",
+      "b146ba15fb22"
+    ]
+  },
+  {
+    "question": "Phân biệt khái niệm 'Trạng thái' (state) và 'Hành vi' (behavior) của một đối tượng. Mối quan hệ giữa chúng là gì?",
+    "suggested_answer": "Trạng thái phản ánh các giá trị hiện tại của các thuộc tính của đối tượng. Hành vi là hoạt động nhìn thấy được từ bên ngoài (thay đổi trạng thái hoặc trả về thông tin). Trạng thái là kết quả của hành vi của đối tượng theo thời gian.",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 1 / Mục 1.3 / Trang 15",
+    "bloom_level": "Understand",
+    "keywords": [
+      "trạng thái",
+      "hành vi",
+      "thuộc tính"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "4223bdecbb4a",
+      "d9d95758bf8f",
+      "a160067b4669",
+      "3a6c59e764e5",
+      "c61545411f3a",
+      "35c79413af90",
+      "b146ba15fb22"
+    ]
+  },
+  {
+    "question": "Tại sao nói 'Thừa kế' (inheritance) là một hình thức tái sử dụng phần mềm?",
+    "suggested_answer": "Vì thừa kế cho phép xây dựng một lớp mới bằng cách hấp thụ (kế thừa) các thành viên của một lớp có sẵn (lớp cha) và chỉ cần bổ sung những tính năng mới hoặc sửa đổi tính năng có sẵn mà không cần định nghĩa lại từ đầu.",
+    "difficulty": "Thông hiểu",
+    "source": "Chương 1 / Mục 1.3 / Trang 15-16",
+    "bloom_level": "Understand",
+    "keywords": [
+      "thừa kế",
+      "tái sử dụng",
+      "lớp dẫn xuất"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "4223bdecbb4a",
+      "d9d95758bf8f",
+      "a160067b4669",
+      "3a6c59e764e5",
+      "c61545411f3a",
+      "35c79413af90",
+      "b146ba15fb22"
+    ]
+  },
+  {
+    "question": "Giải thích cơ chế 'Đa hình' (polymorphism) thông qua ví dụ về thông điệp 'rotate' đối với các đối tượng khác nhau.",
+    "suggested_answer": "Đa hình là khả năng cùng một thông điệp được hiểu theo các cách khác nhau tùy đối tượng nhận. Ví dụ: Khi nhận cùng thông điệp 'rotate', đối tượng Triangle (hình tam giác) và Amoeba (con amip) sẽ thực hiện các phương thức rotate() khác nhau tùy theo định nghĩa riêng của lớp chúng.",
+    "difficulty": "Vận dụng",
+    "source": "Chương 1 / Mục 1.3 / Trang 17",
+    "bloom_level": "Apply",
+    "keywords": [
+      "đa hình",
+      "thông điệp",
+      "phương thức"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "4223bdecbb4a",
+      "d9d95758bf8f",
+      "a160067b4669",
+      "3a6c59e764e5",
+      "c61545411f3a",
+      "35c79413af90",
+      "b146ba15fb22"
+    ]
+  },
+  {
+    "question": "So sánh khả năng thực hiện 'Đóng gói' và 'Che giấu thông tin' giữa ngôn ngữ lập trình hướng đối tượng và ngôn ngữ lập trình thủ tục.",
+    "suggested_answer": "Nguyên tắc đóng gói có thể thực hiện được ở cả hai loại ngôn ngữ. Tuy nhiên, chỉ các ngôn ngữ hướng đối tượng mới cung cấp cơ chế cho phép 'che giấu thông tin', giúp ngăn chặn bên ngoài truy nhập trực tiếp vào các chi tiết cài đặt bên trong của mô-đun.",
+    "difficulty": "Vận dụng cao",
+    "source": "Chương 1 / Mục 1.3 / Trang 15",
+    "bloom_level": "Analyze",
+    "keywords": [
+      "đóng gói",
+      "che giấu thông tin",
+      "ngôn ngữ hướng đối tượng"
+    ],
+    "subject": "Lập trình Java",
+    "chapter": "1.3. CÁC NGUYÊN TẮC TRỤ CỘT",
+    "chunk_ids": [
+      "4223bdecbb4a",
+      "d9d95758bf8f",
+      "a160067b4669",
+      "3a6c59e764e5",
+      "c61545411f3a",
+      "35c79413af90",
+      "b146ba15fb22"
+    ]
+  },
+  {
+    "question": "Dựa trên nội dung giáo trình, hãy xác định các thành phần Input, Process và Output cho bài toán 'Giải phương trình bậc hai: ax^2 + bx + c = 0'.",
+    "suggested_answer": "Input: Các hệ số a, b, c. Process: Tính Delta (Δ = b^2 - 4ac), biện luận các trường hợp của Delta để tìm nghiệm. Output: Kết quả nghiệm của phương trình hoặc thông báo phương trình vô nghiệm.",
+    "difficulty": "Vận dụng",
+    "source": "Chương 1, Bài tập 1.c, Trang 15",
+    "bloom_level": "Apply",
+    "keywords": [
+      "Input",
+      "Process",
+      "Output",
+      "Phương trình bậc 2"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "1.3.2. Sử dụng lưu đồ (Flowchart)",
+    "chunk_ids": [
+      "603f12d86855"
+    ]
+  },
+  {
+    "question": "Trong quá trình thực thi chương trình bằng Dev-C++, nếu cửa sổ console (màn hình DOS) tự động đóng ngay sau khi chạy xong khiến người dùng không kịp xem kết quả, bạn cần xử lý như thế nào theo hướng dẫn trong giáo trình?",
+    "suggested_answer": "Để giải quyết, cần thêm lệnh 'getch();' vào trước dấu đóng ngoặc '}' của hàm main để tạm dừng màn hình. Đồng thời, phải khai báo thêm thư viện '#include <conio.h>' ở đầu chương trình để sử dụng được lệnh này.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 2.1.2.2, Bước 4 (Trang 18-19)",
+    "bloom_level": "Apply",
+    "keywords": [
+      "getch()",
+      "conio.h",
+      "màn hình console",
+      "tạm dừng"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.1. Cài đặt và sử dụng Dev-C++",
+    "chunk_ids": [
+      "282ad8c0a26b",
+      "c388fcd0102d",
+      "68436a29ac91",
+      "f65d3ae89451",
+      "8bbb5fa362de",
+      "afb87d107db6"
+    ]
+  },
+  {
+    "question": "Trong ngôn ngữ C, tại sao chúng ta cần sử dụng phát biểu tiền xử lý #include <stdio.h> và điều gì sẽ xảy ra nếu thiếu nó?",
+    "suggested_answer": "Chúng ta cần khai báo thư viện này vì chương trình sử dụng hàm printf. Khai báo để báo cho trình biên dịch C biết về hàm thư viện; nếu không khai báo chương trình sẽ báo lỗi.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 2.2.1, Trang 19-21",
+    "bloom_level": "Understand",
+    "keywords": [
+      "#include",
+      "stdio.h",
+      "trình biên dịch",
+      "printf"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Giải thích ý nghĩa các thành phần trong cách viết 'void main(void)'.",
+    "suggested_answer": "Mọi chương trình C đều bắt đầu từ hàm main. Từ khóa 'void' đầu tiên cho biết hàm không trả về giá trị; cặp dấu ngoặc '()' cho biết đây là khối hàm; từ khóa 'void' trong ngoặc cho biết hàm không nhận vào đối số.",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 2.2.1, Trang 19-21",
+    "bloom_level": "Understand",
+    "keywords": [
+      "void",
+      "main",
+      "hàm",
+      "đối số"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Trong hàm scanf(\"%d\", &i);, ký hiệu '&' có tên gọi là gì và đóng vai trò như thế nào?",
+    "suggested_answer": "Dấu '&' gọi là toán tử địa chỉ (address operator). Nó phối hợp với tên biến để hàm scanf đem giá trị gõ từ bàn phím lưu vào đúng vị trí của biến trong bộ nhớ.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 2.2.2, Trang 22-23",
+    "bloom_level": "Apply",
+    "keywords": [
+      "scanf",
+      "toán tử địa chỉ",
+      "biến",
+      "bộ nhớ"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Để in ra một số thực với đúng 2 chữ số sau dấu phẩy, bạn sử dụng ký hiệu khai báo chuyển đổi dạng thức nào trong lệnh printf?",
+    "suggested_answer": "Sử dụng ký hiệu '%.2f', trong đó %f cho biết dạng số chấm động sẽ được in ra và '.2' nghĩa là in ra với 2 số lẻ.",
+    "difficulty": "Vận dụng",
+    "source": "Mục 2.2.4, Trang 24-25",
+    "bloom_level": "Apply",
+    "keywords": [
+      "printf",
+      "số chấm động",
+      "định dạng",
+      "%.2f"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Nêu công dụng của lệnh getch() và thư viện đi kèm với nó.",
+    "suggested_answer": "Lệnh getch() dùng để chờ nhận 1 ký tự bất kỳ từ bàn phím (nhưng không in ra màn hình), giúp dừng màn hình kết quả để người dùng quan sát. Lệnh này yêu cầu khai báo thư viện #include <conio.h>.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 2.2.1, Trang 19-22",
+    "bloom_level": "Remember",
+    "keywords": [
+      "getch",
+      "conio.h",
+      "dừng màn hình"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Phân biệt ý nghĩa của các ký tự điều khiển: \\n, \\t, và \\a.",
+    "suggested_answer": "\\n: Nhảy xuống dòng kế tiếp canh về cột đầu tiên; \\t: Canh cột tab ngang; \\a: Phát ra tiếng kêu bip từ loa.",
+    "difficulty": "Nhận biết",
+    "source": "Mục 2.2.1, Trang 19-22",
+    "bloom_level": "Remember",
+    "keywords": [
+      "ký tự điều khiển",
+      "\\n",
+      "\\t",
+      "\\a"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  },
+  {
+    "question": "Khi sử dụng chỉ thị #define để định nghĩa một hằng số (ví dụ: #define PI 3.14), cần lưu ý những quy tắc gì về cú pháp?",
+    "suggested_answer": "Trước define phải có dấu # và cuối dòng định nghĩa không được có dấu chấm phẩy (;).",
+    "difficulty": "Thông hiểu",
+    "source": "Mục 2.2.4, Trang 24-25",
+    "bloom_level": "Understand",
+    "keywords": [
+      "#define",
+      "hằng số",
+      "cú pháp"
+    ],
+    "subject": "Lập trình C",
+    "chapter": "2.2. Các ví dụ làm quen với C",
+    "chunk_ids": [
+      "6601c044bb02",
+      "00140c275b34",
+      "57c705fbd1ad",
+      "9faa75ecae39",
+      "214b021a0526",
+      "1c1375a93e01"
+    ]
+  }
+]
