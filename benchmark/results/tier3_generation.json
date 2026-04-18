@@ -1,0 +1,34 @@
+{
+  "total_questions": 26,
+  "parse_success": {
+    "count": 26,
+    "pct": 100.0
+  },
+  "difficulty_distribution": {
+    "Thông hiểu": 14,
+    "Nhận biết": 7,
+    "Vận dụng": 4,
+    "Vận dụng cao": 1
+  },
+  "bloom_level_distribution": {
+    "Understand": 14,
+    "Remember": 7,
+    "Apply": 4,
+    "Analyze": 1
+  },
+  "subject_distribution": {
+    "Lập trình Java": 17,
+    "Lập trình C": 9
+  },
+  "manual_eval": {
+    "template_path": "C:\\Homework\\Code File\\Python Code File\\de an\\benchmark\\manual_eval_template.csv",
+    "rated_path": "C:\\Homework\\Code File\\Python Code File\\de an\\benchmark\\manual_eval.csv",
+    "sample_size": 20,
+    "factual_accuracy": {
+      "status": "no_manual_ratings",
+      "rated": 0,
+      "total_in_csv": 0,
+      "breakdown": {}
+    }
+  }
+}

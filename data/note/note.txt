@@ -58,7 +58,7 @@ Nếu bạn muốn, ở Agent mode tôi có thể giúp thêm 1–2 cell noteboo
 =============================================================
 1, tạo web cơ bản:
 - up tài liệu
-- gen câu hỏi thêm tùy chọn:
+- gen câu hỏi có thêm tùy chọn:
     + Chọn tài liệu
     + chọn chương
     + thêm ô prompt bổ sung của user: để thêm tiêu chí hoặc điều kiện hoặc kiến thức
