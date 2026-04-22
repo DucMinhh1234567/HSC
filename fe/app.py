@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import streamlit as st
+from dotenv import load_dotenv
 
 from hsc_edu.generation.question_generator import GeneratedQuestion, generate_questions
 from hsc_edu.storage.ingest import ingest_pdf
@@ -12,7 +13,12 @@ from hsc_edu.storage.mongo_store import MongoChunkStore
 from hsc_edu.storage.retrieval import retrieve_chunks
 
 
-UPLOAD_DIR = Path("data/uploads")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+UPLOAD_DIR = PROJECT_ROOT / "data" / "uploads"
+
+# Load both repo-level and fe-level env files.
+load_dotenv(PROJECT_ROOT / ".env", override=False)
+load_dotenv(Path(__file__).resolve().parent / ".env", override=False)
 
 
 def _init_state() -> None:
@@ -54,12 +60,12 @@ def _save_uploaded_pdf(uploaded_file) -> Path:
 
 def _render_chunk_trace(mongo: MongoChunkStore, chunk_ids: list[str]) -> None:
     if not chunk_ids:
-        st.info("Khong co chunk_id de truy xuat.")
+        st.info("Không có chunk_id để truy xuất.")
         return
 
     chunks = mongo.get_chunks_by_ids(chunk_ids)
     if not chunks:
-        st.info("Khong tim thay chunk trong MongoDB.")
+        st.info("Không tìm thấy chunk trong MongoDB.")
         return
 
     for idx, chunk in enumerate(chunks, start=1):
@@ -74,7 +80,7 @@ def _render_chunk_trace(mongo: MongoChunkStore, chunk_ids: list[str]) -> None:
 
 def _render_retrieval_trace(query: str, subject: str, chapter: str, doc_id: str) -> None:
     if not query.strip():
-        st.info("Nhap query de truy xuat nguon.")
+        st.info("Nhập query để truy xuất nguồn.")
         return
 
     hits = retrieve_chunks(
@@ -85,7 +91,7 @@ def _render_retrieval_trace(query: str, subject: str, chapter: str, doc_id: str)
         top_k=8,
     )
     if not hits:
-        st.info("Khong co ket qua retrieval.")
+        st.info("Không có kết quả retrieval.")
         return
 
     for rank, (chunk, score) in enumerate(hits, start=1):
@@ -103,15 +109,15 @@ def _render_retrieval_trace(query: str, subject: str, chapter: str, doc_id: str)
 def _render_generation_results(mongo: MongoChunkStore, selected_doc: str, selected_chapter: str) -> None:
     generated: list[GeneratedQuestion] = st.session_state.generated
     if not generated:
-        st.caption("Chua co cau hoi duoc sinh.")
+        st.caption("Chưa có câu hỏi được sinh.")
         return
 
-    st.subheader("Ket qua cau hoi + cau tra loi de xuat")
+    st.subheader("Kết quả câu hỏi + câu trả lời đề xuất")
     for idx, item in enumerate(generated, start=1):
         with st.container(border=True):
-            st.markdown(f"**{idx}. Cau hoi**")
+            st.markdown(f"**{idx}. Câu hỏi**")
             st.write(item.question)
-            st.markdown("**Tra loi de xuat**")
+            st.markdown("**Trả lời đề xuất**")
             st.write(item.suggested_answer)
             st.caption(
                 f"difficulty={item.difficulty or '-'} | bloom={item.bloom_level or '-'} | "
@@ -120,7 +126,7 @@ def _render_generation_results(mongo: MongoChunkStore, selected_doc: str, select
 
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("Xem chunk nguon", key=f"chunk_{idx}"):
+                if st.button("Xem chunk nguồn", key=f"chunk_{idx}"):
                     _render_chunk_trace(mongo, item.chunk_ids)
             with col2:
                 if st.button("Retrieval trace (Q+A)", key=f"retr_{idx}"):
@@ -141,25 +147,25 @@ def main() -> None:
 
     st.title("HSC-Edu - Basic Web")
     st.caption(
-        "1) Upload tai lieu PDF | 2) Gen cau hoi voi tuy chon doc/chapter/prompt bo sung | "
-        "3) Truy xuat chunk/chapter/page tu ket qua.",
+        "1) Upload tài liệu PDF | 2) Sinh câu hỏi với tùy chọn tài liệu/chương/prompt bổ sung | "
+        "3) Truy xuất chunk/chapter/page từ kết quả.",
     )
 
-    st.subheader("1) Upload tai lieu")
+    st.subheader("1) Upload tài liệu")
     with st.form("upload_form"):
-        uploaded_pdf = st.file_uploader("Chon file PDF", type=["pdf"])
-        subject_input = st.text_input("Subject", value="Lap trinh")
-        doc_id_input = st.text_input("Doc ID (de trong se tu sinh)", value="")
+        uploaded_pdf = st.file_uploader("Chọn file PDF", type=["pdf"])
+        subject_input = st.text_input("Môn học", value="Lập trình")
+        doc_id_input = st.text_input("Doc ID (để trống sẽ tự sinh)", value="")
         do_ingest = st.form_submit_button("Upload + Ingest")
 
     if do_ingest:
         if not uploaded_pdf:
-            st.error("Can chon file PDF.")
+            st.error("Cần chọn file PDF.")
         elif not subject_input.strip():
-            st.error("Can nhap subject.")
+            st.error("Cần nhập môn học.")
         else:
             save_path = _save_uploaded_pdf(uploaded_pdf)
-            with st.spinner("Dang ingest PDF (co the mat vai phut)..."):
+            with st.spinner("Đang ingest PDF (có thể mất vài phút)..."):
                 try:
                     ingested = ingest_pdf(
                         pdf_path=save_path,
@@ -170,26 +176,26 @@ def main() -> None:
                 except Exception as exc:  # noqa: BLE001
                     st.exception(exc)
 
-    st.subheader("2) Gen cau hoi")
+    st.subheader("2) Sinh câu hỏi")
     doc_options = _safe_list(mongo.distinct_values("doc_id"))
-    selected_doc = st.selectbox("Chon tai lieu (doc_id)", options=[""] + doc_options, index=0)
+    selected_doc = st.selectbox("Chọn tài liệu (doc_id)", options=[""] + doc_options, index=0)
     chapter_options = _chapters_for_doc(mongo, selected_doc) if selected_doc else []
-    selected_chapter = st.selectbox("Chon chuong", options=[""] + chapter_options, index=0)
+    selected_chapter = st.selectbox("Chọn chương", options=[""] + chapter_options, index=0)
     extra_prompt = st.text_area(
-        "Prompt bo sung (tieu chi/dieu kien/kien thuc)",
-        placeholder="Vi du: uu tien cau hoi van dung, co lien he bai tap thuc te...",
+        "Prompt bổ sung (tiêu chí/điều kiện/kiến thức)",
+        placeholder="Ví dụ: ưu tiên câu hỏi vận dụng, có liên hệ bài tập thực tế...",
     )
-    num_questions = st.slider("So cau hoi", min_value=1, max_value=10, value=5, step=1)
+    num_questions = st.slider("Số câu hỏi", min_value=1, max_value=10, value=5, step=1)
 
-    if st.button("Sinh cau hoi", type="primary"):
+    if st.button("Sinh câu hỏi", type="primary"):
         if not selected_doc:
-            st.error("Hay chon tai lieu truoc khi sinh cau hoi.")
+            st.error("Hãy chọn tài liệu trước khi sinh câu hỏi.")
         else:
             subject = _subject_for_doc(mongo, selected_doc)
             if not subject:
-                st.error("Khong tim thay subject cho doc_id da chon.")
+                st.error("Không tìm thấy môn học cho doc_id đã chọn.")
             else:
-                with st.spinner("Dang sinh cau hoi..."):
+                with st.spinner("Đang sinh câu hỏi..."):
                     try:
                         generated = generate_questions(
                             subject=subject,
@@ -198,11 +204,11 @@ def main() -> None:
                             query=extra_prompt.strip(),
                         )
                         st.session_state.generated = generated
-                        st.success(f"Sinh xong {len(generated)} cau hoi.")
+                        st.success(f"Sinh xong {len(generated)} câu hỏi.")
                     except Exception as exc:  # noqa: BLE001
                         st.exception(exc)
 
-    st.subheader("3) Truy xuat nguon")
+    st.subheader("3) Truy xuất nguồn")
     _render_generation_results(mongo, selected_doc, selected_chapter)
 
     st.markdown("---")
