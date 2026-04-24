@@ -25,10 +25,15 @@
     "rated_path": "C:\\Homework\\Code File\\Python Code File\\de an\\benchmark\\manual_eval.csv",
     "sample_size": 20,
     "factual_accuracy": {
-      "status": "no_manual_ratings",
-      "rated": 0,
-      "total_in_csv": 0,
-      "breakdown": {}
+      "status": "ok",
+      "rated": 20,
+      "total_in_csv": 20,
+      "breakdown": {
+        "dung": 19,
+        "chua_tot": 1
+      },
+      "factual_accuracy_pct": 97.5,
+      "strict_correct_pct": 95.0
     }
   }
 }

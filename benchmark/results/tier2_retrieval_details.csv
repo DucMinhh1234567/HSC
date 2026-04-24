@@ -1,0 +1,19 @@
+﻿id,subject,question,hit@1,hit@3,top1_score,top1_chapter,top1_section_path,expected_patterns
+java-01,Lập trình Java,Đối tượng và lớp trong lập trình hướng đối tượng có mối quan hệ với nhau như thế nào?,1,1,0.7686,1.2. ĐỐI TƯỢNG VÀ LỚP,1.2. ĐỐI TƯỢNG VÀ LỚP,1.2 | ĐỐI TƯỢNG | LỚP
+java-02,Lập trình Java,Bốn nguyên tắc trụ cột của lập trình hướng đối tượng là gì?,1,1,0.793,1.3. CÁC NGUYÊN TẮC TRỤ CỘT,1.3. CÁC NGUYÊN TẮC TRỤ CỘT,1.3 | NGUYÊN TẮC TRỤ CỘT
+java-03,Lập trình Java,Tại sao nói ngôn ngữ Java có tính độc lập nền tảng?,0,1,0.7782,2.1. ĐẶC TÍNH CỦA JAVA,2.1. ĐẶC TÍNH CỦA JAVA,độc lập nền tảng | platform | bytecode | máy ảo | JVM | Write once
+java-04,Lập trình Java,Phương thức main() có vai trò gì trong một ứng dụng Java và cú pháp khai báo của nó?,0,1,0.7555,2.1. ĐẶC TÍNH CỦA JAVA,2.1. ĐẶC TÍNH CỦA JAVA > 2.1.5. Chương trình Java đầu tiên,main | public static void main | String[] args
+java-05,Lập trình Java,Thế nào là quan hệ thừa kế và từ khóa nào được dùng để khai báo một lớp kế thừa từ lớp khác trong Java?,1,1,0.7481,7.1. QUAN HỆ THỪA KẾ,7.1. QUAN HỆ THỪA KẾ,thừa kế | kế thừa | extends | KẾ THỪA | THỪA KẾ
+java-06,Lập trình Java,Tính đa hình trong lập trình hướng đối tượng được hiểu như thế nào?,1,1,0.795,7.7. ĐA HÌNH,7.7. ĐA HÌNH,7.7 | ĐA HÌNH | đa hình
+c-01,Lập trình C,Thuật giải (Algorithm) là gì và nó dựa trên những cấu trúc điều khiển cơ bản nào?,0,0,0.7308,,,1.1 | 1.2 | Thuật giải | thuật giải | Algorithm | cấu trúc điều khiển
+c-02,Lập trình C,Các quy tắc cần lưu ý khi đặt tên biến hoặc tên hàm trong lập trình C là gì?,1,1,0.7714,3.2. Tên,3.2. Tên,3.2 | Tên | đặt tên | Định danh
+c-03,Lập trình C,Liệt kê các kiểu dữ liệu cơ bản trong C và kích thước bộ nhớ tương ứng của chúng?,1,1,0.7524,3.3. Kiểu dữ liệu,3.3. Kiểu dữ liệu,kiểu dữ liệu | Kiểu dữ liệu | 3.4 | 3.3 | char | int | float | double
+c-04,Lập trình C,"Trong hàm printf, các ký tự điều khiển \n, \t và \a có tác dụng gì?",0,1,0.7683,2.2. Các ví dụ làm quen với C,2.2. Các ví dụ làm quen với C > 2.2.1. Ví dụ 1,printf | ký tự điều khiển | xuất | nhập xuất | 4. | Hàm xuất
+c-05,Lập trình C,Phân biệt sự khác nhau về cơ chế hoạt động giữa vòng lặp while và do...while?,1,1,0.7347,Chương 6 : CẤU TRÚC VÒNG LẶP,Chương 6 : CẤU TRÚC VÒNG LẶP > 6.5. Lệnh do…while,while | do...while | do while | vòng lặp | 6. | VÒNG LẶP
+c-06,Lập trình C,Biến con trỏ là gì và kích thước của nó trong bộ nhớ là bao nhiêu?,1,1,0.7649,Chương 9. CON TRỎ TRONG C,Chương 9. CON TRỎ TRONG C > 9.1. Giới thiệu,con trỏ | CON TRỎ | pointer | 9. | 8.
+python-01,Lập trình Python,Ngôn ngữ Python có những đặc điểm nổi bật nào giúp nó trở nên phổ biến và dễ sử dụng?,0,0,0.0,,,đặc điểm | Đặc điểm | giới thiệu | Giới thiệu | 1. | Python
+python-02,Lập trình Python,Python phân chia các khối lệnh trong chương trình có gì đặc biệt so với các ngôn ngữ khác?,0,0,0.0,,,cấu trúc | Cấu trúc | thụt lề | indentation | khối lệnh | 1. | 2.
+python-03,Lập trình Python,Trình bày các quy tắc cần tuân thủ khi đặt tên biến hoặc tên hàm trong Python?,0,0,0.0,,,định danh | Định danh | Tên | đặt tên | biến
+python-04,Lập trình Python,Kiểu dữ liệu List trong Python là gì và cách truy cập các phần tử bên trong nó?,0,0,0.0,,,List | list | danh sách | Danh sách | Kiểu dữ liệu
+python-05,Lập trình Python,Hãy giải thích cơ chế hoạt động của cấu trúc rẽ nhánh if...elif...else trong Python?,0,0,0.0,,,rẽ nhánh | Rẽ nhánh | điều kiện | if | elif | cấu trúc điều khiển
+python-06,Lập trình Python,Hàm (Function) trong Python là gì và từ khóa nào dùng để định nghĩa một hàm?,0,0,0.0,,,hàm | Hàm | Function | function | def

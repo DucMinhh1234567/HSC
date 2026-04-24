@@ -54,7 +54,7 @@ class EmbeddingConfig(BaseModel):
 class LLMConfig(BaseModel):
     """Gemini LLM API settings."""
 
-    model_name: str = "gemini-flash-latest"
+    model_name: str = "gemini-2.5-flash"
     temperature: float = 0.3
     max_output_tokens: int = 4096
     api_key_env: str = "GOOGLE_API_KEY"
