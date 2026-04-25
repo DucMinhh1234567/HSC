@@ -7,7 +7,7 @@ Bo cong cu cham diem **7 con so** duoc dinh nghia trong [`metric.md`](metric.md)
 ```
 benchmark/
 ├── metric.md                     # Dinh nghia 7 tieu chi
-├── ground_truth.json             # 18 cau hoi de cham Hit@1 / Hit@3
+├── ground_truth.json             # 20 cau hoi de cham Hit@1 / Hit@3 (10 Java + 10 C)
 ├── tier1_chunking.py             # Tang 1 — Chunking (auto)
 ├── tier2_retrieval.py            # Tang 2 — Retrieval (auto, goi Qdrant + Gemini)
 ├── tier3_generation.py           # Tang 3 — Generation (auto + manual template)

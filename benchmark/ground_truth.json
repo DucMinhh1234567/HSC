@@ -1,5 +1,5 @@
 {
-  "description": "Bo 18 cau hoi ground truth de do Hit@1 va Hit@3 (6 Java + 6 C + 6 Python). Moi cau co `expected_chapter_patterns`: danh sach cac chuoi con duoc chap nhan — neu mot chunk co `chapter` hoac `section_path` chua bat ky chuoi nao thi tinh la Hit.",
+  "description": "Bo 20 cau hoi ground truth de do Hit@1 va Hit@3 (10 Java + 10 C). Moi cau co `expected_chapter_patterns`: danh sach cac chuoi con duoc chap nhan — neu mot chunk co `chapter` hoac `section_path` chua bat ky chuoi nao thi tinh la Hit.",
   "questions": [
     {
       "id": "java-01",
@@ -86,46 +86,60 @@
       "keywords": ["con trỏ", "địa chỉ", "&", "*", "pointer"]
     },
     {
-      "id": "python-01",
-      "subject": "Lập trình Python",
-      "question": "Ngôn ngữ Python có những đặc điểm nổi bật nào giúp nó trở nên phổ biến và dễ sử dụng?",
-      "expected_chapter_patterns": ["đặc điểm", "Đặc điểm", "giới thiệu", "Giới thiệu", "1.", "Python"],
-      "keywords": ["thông dịch", "đa năng", "miễn phí", "hướng đối tượng", "di động"]
+      "id": "java-07",
+      "subject": "Lập trình Java",
+      "question": "Dựa trên nội dung giáo trình về các thành phần lưu trữ, hãy giải thích sự khác biệt giữa biến thực thể và biến lớp trong Java.",
+      "expected_chapter_patterns": ["10.1", "BIẾN CỦA LỚP", "biến lớp", "static"],
+      "keywords": ["biến thực thể", "biến lớp", "static", "dùng chung"]
     },
     {
-      "id": "python-02",
-      "subject": "Lập trình Python",
-      "question": "Python phân chia các khối lệnh trong chương trình có gì đặc biệt so với các ngôn ngữ khác?",
-      "expected_chapter_patterns": ["cấu trúc", "Cấu trúc", "thụt lề", "indentation", "khối lệnh", "1.", "2."],
-      "keywords": ["thụt lề", "indentation", "khối lệnh", "khoảng trống", "Tab"]
+      "id": "java-08",
+      "subject": "Lập trình Java",
+      "question": "Tại sao phương thức getCount() trong ví dụ lớp Cow nên được khai báo là phương thức static thay vì phương thức thực thể?",
+      "expected_chapter_patterns": ["10.2", "PHƯƠNG THỨC CỦA LỚP", "static"],
+      "keywords": ["getCount", "static", "phương thức lớp", "instance method"]
     },
     {
-      "id": "python-03",
-      "subject": "Lập trình Python",
-      "question": "Trình bày các quy tắc cần tuân thủ khi đặt tên biến hoặc tên hàm trong Python?",
-      "expected_chapter_patterns": ["định danh", "Định danh", "Tên", "đặt tên", "biến"],
-      "keywords": ["tên", "gạch dưới", "chữ cái", "từ khóa", "chữ hoa"]
+      "id": "java-09",
+      "subject": "Lập trình Java",
+      "question": "Dựa trên giáo trình, có những cách nào để gọi một phương thức static? Hãy nêu ví dụ.",
+      "expected_chapter_patterns": ["10.2", "PHƯƠNG THỨC CỦA LỚP", "static", "Cow.getCount"],
+      "keywords": ["gọi phương thức", "tên lớp", "tham chiếu đối tượng", "static"]
     },
     {
-      "id": "python-04",
-      "subject": "Lập trình Python",
-      "question": "Kiểu dữ liệu List trong Python là gì và cách truy cập các phần tử bên trong nó?",
-      "expected_chapter_patterns": ["List", "list", "danh sách", "Danh sách", "Kiểu dữ liệu"],
-      "keywords": ["list", "danh sách", "index", "phần tử", "[]"]
+      "id": "java-10",
+      "subject": "Lập trình Java",
+      "question": "Giải thích lý do tại sao phương thức main() luôn phải được khai báo với từ khóa static trong Java.",
+      "expected_chapter_patterns": ["10.2", "PHƯƠNG THỨC CỦA LỚP", "main", "static"],
+      "keywords": ["main", "static", "khởi động chương trình", "không cần đối tượng"]
     },
     {
-      "id": "python-05",
-      "subject": "Lập trình Python",
-      "question": "Hãy giải thích cơ chế hoạt động của cấu trúc rẽ nhánh if...elif...else trong Python?",
-      "expected_chapter_patterns": ["rẽ nhánh", "Rẽ nhánh", "điều kiện", "if", "elif", "cấu trúc điều khiển"],
-      "keywords": ["if", "elif", "else", "điều kiện", "rẽ nhánh"]
+      "id": "c-07",
+      "subject": "Lập trình C",
+      "question": "Khi biên dịch chương trình và phát hiện lỗi Syntax, làm thế nào để xác định nhanh vị trí dòng mã nguồn gây lỗi trong Dev-C++?",
+      "expected_chapter_patterns": ["2.1", "Cài đặt và sử dụng Dev-C++", "Bước 3", "Syntax"],
+      "keywords": ["biên dịch", "lỗi cú pháp", "double-click", "vị trí lỗi"]
     },
     {
-      "id": "python-06",
-      "subject": "Lập trình Python",
-      "question": "Hàm (Function) trong Python là gì và từ khóa nào dùng để định nghĩa một hàm?",
-      "expected_chapter_patterns": ["hàm", "Hàm", "Function", "function", "def"],
-      "keywords": ["hàm", "def", "return", "tham số", "function"]
+      "id": "c-08",
+      "subject": "Lập trình C",
+      "question": "Trong ngôn ngữ C, khi dùng scanf(\"%d\", &i), dấu '&' trước tên biến có vai trò gì?",
+      "expected_chapter_patterns": ["2.2", "ví dụ", "scanf", "toán tử địa chỉ"],
+      "keywords": ["scanf", "toán tử địa chỉ", "bộ nhớ", "biến"]
+    },
+    {
+      "id": "c-09",
+      "subject": "Lập trình C",
+      "question": "Trong ngôn ngữ lập trình C, từ khóa (keywords) được định nghĩa như thế nào và có quy tắc gì khi viết?",
+      "expected_chapter_patterns": ["3.1", "Từ khóa", "keywords"],
+      "keywords": ["từ khóa", "khai báo", "chữ thường"]
+    },
+    {
+      "id": "c-10",
+      "subject": "Lập trình C",
+      "question": "Theo quy tắc đặt tên trong C, vì sao '3a_1' và 'num-odd' là không hợp lệ, còn 'Case' có thể hợp lệ dù 'case' là từ khóa?",
+      "expected_chapter_patterns": ["3.2", "Tên", "đặt tên", "phân biệt chữ hoa chữ thường"],
+      "keywords": ["đặt tên", "định danh", "từ khóa", "hoa thường"]
     }
   ]
 }
