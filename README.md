@@ -1,6 +1,8 @@
 # HSC-Edu
 
-**Hierarchical Semantic Chunking** for educational textbooks — a RAG pipeline that turns PDF textbooks into retrieval-ready chunks for automatic Q&A generation.
+**Hierarchical Semantic Chunking** for RAG systems
+
+This strategy of chunking groups text into units that stay coherent in meaning and align with how a document is organized, rather than slicing it at fixed lengths. In **retrieval-augmented generation (RAG)**, that usually improves what gets retrieved: the model sees context that matches real sections and topics, which can reduce noise and irrelevant hits compared with naive chunking. This repository implements one such approach end to end; the sections below cover how to run it locally.
 
 ## Quick start
 
@@ -21,35 +23,34 @@ pip install -r requirements.txt
 
 ### 3. Setup MongoDB (local)
 
-1. Download **MongoDB Community Server** from [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community) (chon MSI installer cho Windows).
-2. Cai dat voi tuy chon mac dinh — **Install as Service** de MongoDB tu dong chay khi khoi dong may.
+1. Download **MongoDB Community Server** from [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community).
+2. Install with default options — enable **Install as Service** so MongoDB starts automatically on boot.
 3. Verify:
 
 ```bash
 mongosh --eval "db.runCommand({ ping: 1 })"
 ```
 
-Ket qua mong doi: `{ ok: 1 }`
+Expected output: `{ ok: 1 }`
 
-MongoDB mac dinh chay tai `mongodb://localhost:27017` — khong can dang nhap cho dev local.
+By default MongoDB runs at `mongodb://localhost:27017`.
 
 ### 4. Setup Qdrant Cloud
 
-1. Tao tai khoan tai [cloud.qdrant.io](https://cloud.qdrant.io/) (co free tier).
-2. Tao **cluster** moi (chon region gan nhat).
-3. Sau khi cluster san sang, lay:
-   - **Cluster URL** (dang `https://xxx-xxx.cloud.qdrant.io:6333`)
-   - **API Key** (tao trong tab "API Keys")
+1. Create an account at [cloud.qdrant.io](https://cloud.qdrant.io/).
+2. Create a **new cluster**.
+3. Once the cluster is ready, obtain:
+   - **Cluster URL** (format `https://xxx-xxx.cloud.qdrant.io:6333`)
+   - **API Key**
 
 ### 5. Setup Gemini API
 
-1. Truy cap [Google AI Studio](https://aistudio.google.com/apikey).
-2. Tao **API key** moi.
-3. Ghi nho key — chi hien thi mot lan.
+1. Open [Google AI Studio](https://aistudio.google.com/apikey).
+2. Create a **new API key**.
 
-### 6. Tao file `.env`
+### 6. Create the `.env` file
 
-Tao file `.env` tai thu muc goc cua project (file nay da duoc `.gitignore`):
+Create a `.env` file in the project root (this file is already listed in `.gitignore`):
 
 ```env
 GOOGLE_API_KEY=your-gemini-api-key-here
@@ -58,16 +59,17 @@ QDRANT_API_KEY=your-qdrant-api-key-here
 MONGO_URI=mongodb://localhost:27017
 ```
 
-### 7. Chay notebook
+### 7. Run the notebook
 
 ```bash
 jupyter notebook notebooks/03_retrieval_demo.ipynb
 ```
 
-Notebook se:
-- Ingest `Java.pdf` va `C.pdf` (extract → classify → chunk → embed → store)
-- Hien thi thong ke MongoDB va Qdrant
-- Thu 5 cau hoi ground truth va hien thi ket qua retrieval
+The notebook will:
+
+- Ingest `Java.pdf` and `C.pdf` (extract → classify → chunk → embed → store)
+- Show MongoDB and Qdrant statistics
+- Run 5 ground-truth queries and display retrieval results
 
 ## Project structure
 
@@ -94,9 +96,7 @@ data/
 docs/                   # Architecture, specs, project plan
 ```
 
-## Luu y quan trong
+## TODO
 
-- **Vector dimension phai khop**: Qdrant collection dung `size=768` (mac dinh cua `gemini-embedding-001`). Neu doi model embedding, can xoa va tao lai collection.
-- **Rate limit Gemini**: Free tier co gioi han ~1500 requests/phut. Pipeline tu dong batch 20 texts/request va retry khi bi rate-limited.
-- **Dong bo Qdrant + MongoDB**: Ca hai duoc ghi trong cung ham `ingest_chunks()`. Neu mot ben loi, chay lai ingest de dong bo.
-- **MongoDB khong can auth cho dev local**. Production nen bat authentication.
+- **Images and tables**: extend the pipeline to extract, represent, and store figures and tabular content.
+- **Semantic linking for figures and tables**: link images and tables to surrounding narrative and headings so retrieval can surface the right visual or table context together with related text.
